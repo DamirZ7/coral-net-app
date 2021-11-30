@@ -1,0 +1,133 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import carBrand from '../Data/carBrand';
+
+
+export default function Auction({ navigation, route }) {
+    const {login, pass, follow} = route.params
+    const [listOfBrands, setListOfBrands] = useState(carBrand)
+    const [search, setSearch] = useState('')
+    const [filteredData, setFilteredData] = useState(carBrand)
+
+    const searchFilteredFunction = (text) => {
+        if (text) {
+            const newDate = listOfBrands.filter((item) => {
+                const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase()
+                const textData = text.toUpperCase()
+                return itemData.indexOf(textData) > -1
+            })
+            setFilteredData(newDate)
+            setSearch(text)
+
+        } else {
+            setFilteredData(listOfBrands)
+            setSearch(text)
+        }
+    }
+
+
+    return (
+        <ScrollView style={{ backgroundColor: '#fff' }} >
+
+            <View style={styles.container} >
+                <Ionicons
+                    name="search"
+                    size={30}
+                    color="#168dd0" />
+                <TextInput
+                    style={styles.search}
+                    placeholder='Поиск'
+                    onChangeText={(text) => searchFilteredFunction(text)}
+                    value={search} />
+            </View>
+
+            <View>
+                <FlatList
+                    data={filteredData}
+                    horizontal={true}
+                    renderItem={({ item }) => (
+
+                        <TouchableOpacity style={styles.carList} onPress={() => {
+                            const carsValue = item.value
+
+                            navigation.navigate('CarsModels', {
+                                carsId: carsValue,
+                                login: login,
+                                pass: pass,
+                                follow: follow
+                            })
+
+                        }} >
+                            <Image style={styles.image} source={item.img} />
+                            <Text style={styles.text}>{item.title}</Text>
+                        </TouchableOpacity>
+
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+
+            </View>
+
+        </ScrollView>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        marginTop: 15,
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    search: {
+        paddingLeft: 10,
+        borderWidth: 1,
+        borderRadius: 9,
+        borderColor: 'grey',
+        width: '80%',
+        height: '100%',
+        marginLeft: 10,
+
+    },
+    carList: {
+        marginVertical: 20,
+        marginHorizontal: 8,
+        height: 150,
+        width: 120,
+        backgroundColor: '#fff',
+        elevation: 10,
+        borderRadius: 0,
+        alignItems: 'center',
+        shadowColor: '#168dd0',
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowOffset: {width: 0, height: 2}
+
+    },
+    image: {
+        marginVertical: 25,
+        width: 60,
+        height: 40,
+    },
+    text: {
+        marginTop: 20
+    },
+    // carListV: {
+    //     height: 50,
+    //     width: '100%',
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     marginTop: 5,
+    //     backgroundColor: '#fff',
+    //     borderBottomWidth: 1,
+    //     borderBottomColor: '#168dd0'
+
+    // },
+    // imageV: {
+    //     height: 30,
+    //     width: 45,
+    //     marginHorizontal: 10,
+    // }
+})
+
