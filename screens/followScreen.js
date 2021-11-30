@@ -99,9 +99,9 @@ export default function followScreen({ navigation, route }) {
         )
     }
     return (
-        <ScrollView style={{ backgroundColor: '#fff'}}>
+        <SafeAreaView style={{ backgroundColor: '#fff', flex: 1}}>
             
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%', height: 80, marginTop: 10, marginBottom: 25 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: 80, marginTop: 10, marginBottom: 25 }}>
                 <TouchableOpacity onPress={() => {
                     navigation.navigate('Auction', {
                         login: login,
@@ -135,7 +135,7 @@ export default function followScreen({ navigation, route }) {
                 }
             </View>
 
-        </ScrollView>
+        </SafeAreaView>
 
     )
 

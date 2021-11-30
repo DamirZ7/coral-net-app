@@ -68,17 +68,20 @@ export default function selectedCarScreen({ navigation, route }) {
                             style={{ width, height }}
                         >
                             {alert ? (
-                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', borderColor: 'red', borderWidth: 2, width}}>
-                                <Text style={{fontSize: 28}}>
-                                    Аукцион завершен
-                                </Text>
-                            </View>
+                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', borderColor: 'red', borderWidth: 2, width }}>
+                                    <Text style={{ fontSize: 28 }}>
+                                        Аукцион завершен
+                                    </Text>
+                                </View>
                             ) : (
                                 resDataPars.map((it, index) => {
                                     return (
-                                        <TouchableOpacity onPress={() => {
-                                            Linking.openURL(it)
-                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                Linking.openURL(it)
+                                            }}
+                                            key={index.toString()}
+                                        >
                                             <Image
                                                 source={{ uri: it }}
                                                 style={{ width, height, resizeMode: 'cover' }}
