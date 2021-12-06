@@ -22,7 +22,6 @@ export default function followScreen({ navigation, route }) {
         fetch('http://192.168.0.103:5050/follow', requestOptions)
             .then(response => response.json())
             .then(data => {
-                //console.log(data.length)
                 setData(data)
                 setLoading(false)
             })
@@ -134,12 +133,8 @@ export default function followScreen({ navigation, route }) {
                     )
                 }
             </View>
-
         </SafeAreaView>
-
     )
-
-
 }
 
 const styles = StyleSheet.create({
