@@ -108,10 +108,10 @@ const styles = StyleSheet.create({
     image: {
         marginVertical: 25,
         width: 60,
-        height: 40,
+        height: 60,
     },
     text: {
-        marginTop: 20
+        marginTop: 0
     },
     // carListV: {
     //     height: 50,
