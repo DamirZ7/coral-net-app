@@ -113,21 +113,5 @@ const styles = StyleSheet.create({
     text: {
         marginTop: 0
     },
-    // carListV: {
-    //     height: 50,
-    //     width: '100%',
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     marginTop: 5,
-    //     backgroundColor: '#fff',
-    //     borderBottomWidth: 1,
-    //     borderBottomColor: '#168dd0'
-
-    // },
-    // imageV: {
-    //     height: 30,
-    //     width: 45,
-    //     marginHorizontal: 10,
-    // }
 })
 
