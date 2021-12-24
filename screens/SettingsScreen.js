@@ -37,7 +37,7 @@ export default function SettingsScreen({ navigation, route }) {
       })
     }
 
-    fetch('http://192.168.0.103:5050/follow/add', requestOptions)
+    fetch('http://coralserver.ddns.net:8000/follow/add', requestOptions)
       .then(response => response.json())
       .then(data => {
         if (data === 'Ничего не найдено') {

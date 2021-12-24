@@ -18,7 +18,7 @@ export default function followOneScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://192.168.0.103:5050/follow/view/${id}`, requestOptions)
+        fetch(`http://coralserver.ddns.net:8000/follow/view/${id}`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.cars.length > 0) {

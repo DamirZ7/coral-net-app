@@ -28,7 +28,7 @@ export default function calcResultScreen({ navigation, route }) {
             })
         }
 
-        fetch('http://192.168.0.103:5050/calculate', requestOptions)
+        fetch('http://coralserver.ddns.net:8000/calculate', requestOptions)
             .then(response => response.json())
             .then(data => {
                 setResCalcPars(data.calc)

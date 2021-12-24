@@ -30,7 +30,7 @@ export default function carsResultsScreen({ navigation, route }) {
             })
         }
 
-        fetch('http://192.168.0.103:5050/auction', requestOptions)
+        fetch('http://coralserver.ddns.net:8000/auction', requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.cars.length > 0) {
