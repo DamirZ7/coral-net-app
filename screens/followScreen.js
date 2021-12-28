@@ -19,7 +19,7 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch('http://192.168.0.103:5050/follow', requestOptions)
+        fetch('http://52.15.47.185:5050/follow', requestOptions)
             .then(response => response.json())
             .then(data => {
                 setData(data)
@@ -40,7 +40,7 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://192.168.0.103:5050/follow/remove/${id}`, requestOptions)
+        fetch(`http://52.15.47.185:5050/follow/remove/${id}`, requestOptions)
             .then(response => response.json())
             .then(message => {
                 console.log(message)

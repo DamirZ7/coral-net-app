@@ -31,7 +31,7 @@ export default function Navigate() {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://192.168.0.103:5050/auth/logout`, requestOptions)
+        fetch(`http://52.15.47.185:5050/auth/logout`, requestOptions)
             .then(response => response.json())
             .then(message => {
                 console.log(message)
