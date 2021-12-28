@@ -30,11 +30,7 @@ export default function selectedCarScreen({ navigation, route }) {
             })
         }
 
-<<<<<<< HEAD
-        fetch('http://52.15.47.185:5050/img', requestOptions)
-=======
         fetch('http://coralserver.ddns.net:8000/img', requestOptions)
->>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
             .then(response => response.json())
             .then(data => {
                 if (data.imgs.length > 0) {

@@ -37,11 +37,7 @@ export default function SettingsScreen({ navigation, route }) {
       })
     }
 
-<<<<<<< HEAD
-    fetch('http://52.15.47.185:5050/follow/add', requestOptions)
-=======
     fetch('http://coralserver.ddns.net:8000/follow/add', requestOptions)
->>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
       .then(response => response.json())
       .then(data => {
         if (data === 'Ничего не найдено') {
