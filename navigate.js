@@ -31,7 +31,11 @@ export default function Navigate() {
                 'Content-Type': 'application/json'
             },
         }
+<<<<<<< HEAD
         fetch(`http://52.15.47.185:5050/auth/logout`, requestOptions)
+=======
+        fetch(`http://coralserver.ddns.net:8000/auth/logout`, requestOptions)
+>>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
             .then(response => response.json())
             .then(message => {
                 console.log(message)

@@ -24,7 +24,11 @@ export default function SigninScreen({ navigation }) {
             })
         }
 
+<<<<<<< HEAD
         fetch('http://52.15.47.185:5050/auth', requestOptions)
+=======
+        fetch('http://coralserver.ddns.net:8000/auth', requestOptions)
+>>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
             .then(response => response.json())
             .then(data => {
                 if (data.res === 'логин неверный') {

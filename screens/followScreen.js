@@ -19,7 +19,11 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
+<<<<<<< HEAD
         fetch('http://52.15.47.185:5050/follow', requestOptions)
+=======
+        fetch('http://coralserver.ddns.net:8000/follow', requestOptions)
+>>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
             .then(response => response.json())
             .then(data => {
                 setData(data)
@@ -40,7 +44,11 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
+<<<<<<< HEAD
         fetch(`http://52.15.47.185:5050/follow/remove/${id}`, requestOptions)
+=======
+        fetch(`http://coralserver.ddns.net:8000/follow/remove/${id}`, requestOptions)
+>>>>>>> 9630beefe4a46a1812e19ea29237039967966dbb
             .then(response => response.json())
             .then(message => {
                 console.log(message)
