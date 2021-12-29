@@ -61,7 +61,7 @@ export default function SigninScreen({ navigation }) {
                 <Text style={styles.logoText} >Used Japanese Cars</Text>
             </View>
 
-            <Image style={styles.mainImage} source={require('../src/img/Camry70.png')} />
+            <Image style={styles.mainImage} source={require('../src/img/mb-signin.png')} />
 
             <View style={styles.InputContainer}>
                 {loading ? (
