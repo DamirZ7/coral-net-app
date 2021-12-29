@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation, route }) {
                 login: login,
                 pass: pass,
             })}>
-                <Text style={styles.buttonsText}>Избранное</Text>
+                <Text style={styles.buttonsText}>Автоматический поиск</Text>
                 <Ionicons name="star-outline" size={50} color="#168dd0" />
             </TouchableOpacity>       
         </View>

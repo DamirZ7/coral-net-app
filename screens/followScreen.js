@@ -109,7 +109,7 @@ export default function followScreen({ navigation, route }) {
                     })
                 }} style={{ width: '50%', height: '100%', flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', borderRadius: 0, elevation: 10 }}>
                     <FontAwesome name="plus-square-o" size={30} color="#168dd0" />
-                    <Text style={{ marginTop: 10 }}>Новое отслеживание</Text>
+                    <Text style={{ marginTop: 10 }}>Новый поисковой запрос</Text>
                 </TouchableOpacity>
             </View>
             <View>
