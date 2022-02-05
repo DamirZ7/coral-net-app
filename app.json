@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Coral Net - Japanese Car Trade",
+    "name": "Coral Net - Asnet",
     "slug": "Coral-Net",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/coral_net1.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "CoralNetApp.apk"
     },
     "web": {
       "favicon": "./assets/favicon_CoralNet.png"

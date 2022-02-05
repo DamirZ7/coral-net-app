@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import carBrand from '../Data/carBrand';
 
 
 export default function Auction({ navigation, route }) {
-    const {login, pass, follow} = route.params
+    const {follow, language} = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.auctionScreen.selectBrand,
+        })
+    }, [language])
+
     const [listOfBrands, setListOfBrands] = useState(carBrand)
     const [search, setSearch] = useState('')
     const [filteredData, setFilteredData] = useState(carBrand)
@@ -37,7 +44,7 @@ export default function Auction({ navigation, route }) {
                     color="#168dd0" />
                 <TextInput
                     style={styles.search}
-                    placeholder='Поиск'
+                    placeholder={language.values.auctionScreen.search}
                     onChangeText={(text) => searchFilteredFunction(text)}
                     value={search} />
             </View>
@@ -53,13 +60,12 @@ export default function Auction({ navigation, route }) {
 
                             navigation.navigate('CarsModels', {
                                 carsId: carsValue,
-                                login: login,
-                                pass: pass,
-                                follow: follow
+                                follow: follow,
+                                language: language,
                             })
 
                         }} >
-                            <Image style={styles.image} source={item.img} />
+                            <Image style={styles.image} source={item.img} resizeMode='contain' />
                             <Text style={styles.text}>{item.title}</Text>
                         </TouchableOpacity>
 

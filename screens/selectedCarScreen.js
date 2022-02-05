@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Linking, Text, Image, ScrollView, StatusBar, SafeAreaView, ActivityIndicator, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import URL from '../keys/keys'
 
 export default function selectedCarScreen({ navigation, route }) {
 
@@ -8,11 +9,20 @@ export default function selectedCarScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true)
     const [textVisible, setTextVisible] = useState(false)
     const [alert, setAlert] = useState(false)
+    const [mailAlert, setMailAlert] = useState('')
+    const [mailLoading, setMailLoading] = useState(false)
 
-    const { aucNumber, startPrice, year, rate, mileage, auc, date, carBody, motor, complect, option1, option2, src, login, pass, id, index } = route.params
+    const { corner, aacount, exhnum, auction, aucDate, car, car1, color, inspect, lotNum, lotNum1, model, model1, odo, options, options1, price, rate, year, year1, language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.selectedCarScreen.selectedCar,
+        })
+    }, [language])
 
     const { width } = Dimensions.get('window')
     const height = width * 100 / 140
+    const link = `https://www.asnet2.com/asnet_en/auction/detail/corner/${corner}/aacount/${aacount}/exhnum/${exhnum}/`
 
     useEffect(() => {
         const requestOptions = {
@@ -22,21 +32,19 @@ export default function selectedCarScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                url: src,
-                login: login,
-                pass: pass,
-                id: id,
-                index: index
+                corner: corner,
+                aacount: aacount,
+                exhnum: exhnum,
             })
         }
 
-        fetch('http://coralserver.ddns.net:8000/img', requestOptions)
+        fetch(`${URL}/img`, requestOptions)
             .then(response => response.json())
             .then(data => {
-                if (data.imgs.length > 0) {
-                    setResDataPars(data.imgs)
+                if (data.length > 0) {
+                    setResDataPars(data)
                     setLoading(false)
-                    console.log(data.imgs)
+                    //console.log(data)
                 } else {
                     setAlert(true)
                     setLoading(false)
@@ -44,16 +52,51 @@ export default function selectedCarScreen({ navigation, route }) {
             })
             .catch((err) => {
                 setLoading(false)
-                setResDataPars(['Произошла ошибка!'])
+                setResDataPars([language.values.selectedCarScreen.dataErr])
                 console.log(err);
             })
 
     }, [])
 
+    const sendMail = (link) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                link: link,
+            })
+        }
+
+        fetch(`${URL}/mailsend`, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                if (data === 'Лот отправлен, Ваш менеджер свяжется с вами в ближайшее время') {
+                    setMailLoading(false)
+                    setMailAlert(language.values.selectedCarScreen.sendMailCompl)
+                }
+                else if (data.res === 'Произошла ошибка при отправке, попородуйте еще раз') {
+                    setMailLoading(false)
+                    setMailAlert(language.values.selectedCarScreen.sendMailErr)
+                }
+                else {
+                    setMailLoading(false)
+                    setMailAlert('Ошибка')
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                setMailLoading(false)
+                setMailAlert(language.values.selectedCarScreen.serverErr)
+            })
+    }
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
             <ScrollView >
+
                 <View style={{ flex: 1, alignItems: 'center', paddingVertical: 0 }}>
                     {loading ? (
                         <ActivityIndicator
@@ -70,11 +113,11 @@ export default function selectedCarScreen({ navigation, route }) {
                             {alert ? (
                                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', borderColor: 'red', borderWidth: 2, width }}>
                                     <Text style={{ fontSize: 28 }}>
-                                        Аукцион завершен
+                                        {language.values.selectedCarScreen.dataErr}
                                     </Text>
                                 </View>
                             ) : (
-                                resDataPars.map((it, index) => {
+                                resDataPars[0].carFoto.map((it, index) => {
                                     return (
                                         <TouchableOpacity
                                             onPress={() => {
@@ -104,8 +147,8 @@ export default function selectedCarScreen({ navigation, route }) {
                         }}
                         style={{ marginVertical: 15, height: 20 }}
                     >
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Text style={{ fontStyle: 'italic' }}>Справочник обозначений аукционного листа</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomWidth: 1.5, borderBottomColor: 'gray', paddingBottom: 10, marginHorizontal: 10 }}>
+                            <Text style={{ fontStyle: 'italic' }}>{language.values.selectedCarScreen.aucList}</Text>
                             <AntDesign name={textVisible === true ? "up" : "down"} size={22} color="#168dd0" />
                         </View>
                     </TouchableOpacity>
@@ -113,6 +156,23 @@ export default function selectedCarScreen({ navigation, route }) {
                         {textVisible === false
                             ? <View></View>
                             : <View style={{ paddingHorizontal: 10 }}>
+                                <View>
+                                    {resDataPars.length === 0 ? (
+                                        <ActivityIndicator
+                                            visible={loading}
+                                            size='small'
+                                            color='#168dd0'
+                                        />
+                                    ) : (
+                                        <View>
+                                            <Image
+                                                source={{ uri: resDataPars[0].aucImage }}
+                                                //resizeMode='cover'
+                                                style={{ width, height, resizeMode: 'contain', marginBottom: 10 }}
+                                            />
+                                        </View>
+                                    )}
+                                </View>
                                 <Text>
                                     A1 Маленькая Царапина{'\n'}
                                     A2 Царапина{'\n'}
@@ -150,68 +210,226 @@ export default function selectedCarScreen({ navigation, route }) {
                         }
                     </View>
                 </View>
-                <View style={{ paddingLeft: 10 }}>
-                    <View style={{ width: '95%', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, borderBottomWidth: 1.5, borderColor: 'gray', paddingBottom: 10 }}>
+
+                <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
                         <View>
-                            <Text style={styles.text}>Номер лота</Text>
-                            <Text style={styles.textInfo}>{aucNumber}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{car}</Text>
                         </View>
-                        <View>
-                            <Text style={styles.text}>Стартовая цена</Text>
-                            <Text style={styles.textInfo}>{startPrice}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ color: 'gray', fontSize: 16 }}>{language.values.selectedCarScreen.year}: </Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{year} {year1}</Text>
                         </View>
                     </View>
-                    <View style={styles.infoContainer}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Год</Text>
-                            <Text style={styles.textInfo}>{year}</Text>
+
+                    <View style={{ borderBottomWidth: 1.5, borderColor: 'gray', paddingBottom: 10, marginBottom: 10 }}>
+                        <View>
+                            <Text style={{ color: 'gray', fontSize: 16 }}>{language.values.selectedCarScreen.price}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{price}</Text>
                         </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Оценка</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View >
+                            <Text style={styles.text}>{language.values.selectedCarScreen.lotNum}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{lotNum} {lotNum1}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.rate}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
                             <Text style={styles.textInfo}>{rate}</Text>
                         </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Пробег</Text>
-                            <Text style={styles.textInfo}>{mileage}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.inspect}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{inspect}</Text>
                         </View>
                     </View>
-                    <View style={styles.infoContainer}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Кузов</Text>
-                            <Text style={styles.textInfo}>{carBody}</Text>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.range}</Text>
                         </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Обьем двигателя</Text>
-                            <Text style={styles.textInfo}>{motor} сс</Text>
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Комплектация</Text>
-                            <Text style={styles.textInfo}>{complect}</Text>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{odo}</Text>
                         </View>
                     </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}>Аукцион</Text>
-                        <Text style={styles.textInfo}>{auc}</Text>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.carBody}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{model}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.color}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{color}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.complect}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{car1}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen. auction}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{auction}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.aucDate}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{aucDate}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.engine}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Text style={styles.textInfo}>{model1} сс</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.fuel}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            {resDataPars.length === 0 ? (
+                                <ActivityIndicator
+                                    visible={loading}
+                                    size='small'
+                                    color='#168dd0'
+                                />
+                            ) : (
+                                <View>
+                                    <Text style={styles.textInfo}>{resDataPars[0].fuel}</Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, borderBottomWidth: 1.5, borderBottomColor: 'gray', paddingBottom: 10 }}>
+                        <View>
+                            <Text style={styles.text}>{language.values.selectedCarScreen.history}</Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            {resDataPars.length === 0 ? (
+                                <ActivityIndicator
+                                    visible={loading}
+                                    size='small'
+                                    color='#168dd0'
+                                />
+                            ) : (
+                                <View>
+                                    <Text style={styles.textInfo}>{resDataPars[0].history}</Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+
+                </View>
+
+                <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+                    <View style={{ marginBottom: 5 }}>
+                        <Text style={styles.text}>{language.values.selectedCarScreen.options}</Text>
                     </View>
                     <View>
-                        <Text style={styles.text}>Дата аукциона</Text>
-                        <Text style={styles.textInfo}>{date}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.text}>Опции</Text>
-                        <Text style={styles.textInfo}>{option2}</Text>
-                        <Text style={styles.textInfo}>{option1}</Text>
+                        {resDataPars.length === 0 ? (
+                            <ActivityIndicator
+                                visible={loading}
+                                size='small'
+                                color='#168dd0'
+                            />
+                        ) : (
+                            <View>
+                                <Text style={styles.textInfo}>{options}</Text>
+                                <Text style={styles.textInfo}>{options1}</Text>
+                                <Text style={styles.textInfo}>{resDataPars[0].equip}</Text>
+                            </View>
+                        )}
                     </View>
                 </View>
 
-                {/* <View style={styles.btn}>
-                    <TouchableOpacity style={styles.btnArea}>
-                        <Text style={{ color: 'white', fontSize: 16 }}>Статистика продаж</Text>
-                    </TouchableOpacity>
-                </View> */}
+                <View style={{ paddingHorizontal: 10 }}>
+                    <View style={{ marginBottom: 5 }}>
+                        <Text style={styles.text}>{language.values.selectedCarScreen.inform}</Text>
+                    </View>
 
+                    <View>
+                        {resDataPars.length === 0 ? (
+                            <ActivityIndicator
+                                visible={loading}
+                                size='small'
+                                color='#168dd0'
+                            />
+                        ) : (
+                            <View>
+                                <Text style={styles.textInfo}>{resDataPars[0].inform}</Text>
+                            </View>
+                        )}
+                    </View>
+                </View>
+
+
+
+                <View style={styles.btn}>
+                    <TouchableOpacity
+                        style={styles.btnArea}
+                        onPress={() => {
+                            setMailLoading(true)
+                            sendMail(link)
+                        }
+                        }
+                    >
+                        <Text style={{ color: 'white', fontSize: 16 }}>{language.values.selectedCarScreen.sendMail}</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{marginVertical: 10}}>
+                    {mailLoading ? (
+                        <ActivityIndicator
+                            visible={loading}
+                            size='small'
+                            color='#168dd0'
+                        />
+                    ) : (
+                        <View>
+                            <Text style={{ textAlign: 'center' }}>{mailAlert}</Text>
+                        </View>
+                    )}
+                </View>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
@@ -222,8 +440,8 @@ const styles = StyleSheet.create({
 
     },
     textInfo: {
-        fontSize: 20,
-        fontWeight: 'bold'
+        fontSize: 14,
+        fontWeight: 'bold',
     },
     textContainer: {
         marginBottom: 10,
@@ -232,13 +450,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1.5,
         borderColor: 'gray',
         marginBottom: 10,
-        width: '95%'
+        //width: '95%'
     },
     btn: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 20,
+        paddingVertical: 30,
 
     },
     btnArea: {

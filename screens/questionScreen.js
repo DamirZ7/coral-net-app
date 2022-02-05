@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput, Text, Image, ScrollView, StatusBar } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default function questionScreen({ navigation }) {
+export default function questionScreen({ navigation, route }) {
+
+    const { language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.faqsScreen.faqs,
+        })
+    }, [language])
 
     const [aFullText1, setAFullText1] = useState(0)
     const [color1, setColor1] = useState('white')
@@ -33,7 +41,7 @@ export default function questionScreen({ navigation }) {
                 }}>
                     <View style={styles.textContainer}>
                         <Text style={styles.text}>
-                            Как покупать
+                            {language.values.faqsScreen.howToBuy}
                         </Text>
                         <AntDesign name={aFullText1 > 0 ? "up" : "down"} size={20} color="#168dd0" />
                     </View>
@@ -46,12 +54,12 @@ export default function questionScreen({ navigation }) {
                             1
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color1 }]}>
-                            Регистрация и поиск
+                            {language.values.faqsScreen.text1}
                         </Text>
 
                     </View>
                     <Text style={[styles.subtextInfo, { color: color1 }]}>
-                        Зарегистрируйтесь на нашем сайте auc.coral-net.jp и найдите нужный автомобиль, наш менеджер свяжется с вами по E-mail или WhatsApp и ответит на все ваши вопросы, произведет расчеты и покажет предложения.
+                        {language.values.faqsScreen.text2}
                     </Text>
 
                     <View style={{ alignItems: 'center' }}>
@@ -59,33 +67,33 @@ export default function questionScreen({ navigation }) {
                             2
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color1 }]}>
-                            Депозит
+                            {language.values.faqsScreen.text3}
                         </Text>
                     </View>
                     <Text style={[styles.subtextInfo, { color: color1 }]}>
-                        Залог подлежит 100% возврату. Независимо от результата аукциона, мы не касаемся вашего аукционного депозита. Вы можете использовать его для другого аукциона, применить возврат, включить в общую стоимость автомобиля или использовать его для оплаты другого автомобиля. все зависит от вас! Сумма депозита составляет 1500 долларов США для автомобилей стоимостью менее 20 000 долларов США. Для автомобилей стоимостью более 20 000 долларов США необходимая сумма залога должна составлять 10% от ожидаемой стоимости автомобиля. Его нужно отправить TT-переводом из любого местного банка.
+                        {language.values.faqsScreen.text4}
                     </Text>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.subtextNumber, { color: color1 }]}>
                             3
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color1 }]}>
-                            Размещение ставки и результаты
+                            {language.values.faqsScreen.text5}
                         </Text>
                     </View>
                     <Text style={[styles.subtextInfo, { color: color1 }]}>
-                        После получения депозита с вами проконсультируют, как выбирать лоты, делать ставки, использовать статистику продаж и т.д.
+                        {language.values.faqsScreen.text6}
                     </Text>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.subtextNumber, { color: color1 }]}>
                             4
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color1 }]}>
-                            Полная оплата автомобиля
+                            {language.values.faqsScreen.text7}
                         </Text>
                     </View>
                     <Text style={[styles.subtextInfo, { color: color1 }]}>
-                        Когда ставка выиграна, вам будет отправлен счет на оплату. Оплата должна быть отправлена ​​в течении 3-5 рабочих дней после покупки через TT-перевод. Как только ваш платеж поступит на наш счет, менеджер по логистике свяжется с вами и соберет все необходимые данные, чтобы организовать отправку вашего автомобиля в страну назначения.
+                        {language.values.faqsScreen.text8}
                     </Text>
                 </View>
 
@@ -103,7 +111,7 @@ export default function questionScreen({ navigation }) {
                 }}>
                     <View style={styles.textContainer} >
                         <Text style={styles.text} >
-                            Вопросы оплаты
+                            {language.values.faqsScreen.payment}
                         </Text>
                         <AntDesign name={aFullText2 > 0 ? "up" : "down"} size={20} color="#168dd0" />
                     </View>
@@ -112,40 +120,40 @@ export default function questionScreen({ navigation }) {
                 <View style={[styles.subtextContainer, { height: aFullText2 }]}>
                     <View>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            Как мне произвести оплату?
+                            {language.values.faqsScreen.text9}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            В настоящее время мы принимаем только банковские переводы (T/T). Мы не принимаем кредитные или дебетовые карты и другие способы оплаты.{'\n'}{'\n'}Примечание. Плата за перевод оплачивается клиентом.
+                            {language.values.faqsScreen.text10}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            Куда нужно отправить депозит?
+                            {language.values.faqsScreen.text11}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            Детали будут отправлены по запросу вашим личным помощником.
+                            {language.values.faqsScreen.text12}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            В какой валюте можно произвести оплату?
+                            {language.values.faqsScreen.text13}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            Вы можете отправить нам оплату в долларах США, японских йенах или евро.
+                            {language.values.faqsScreen.text14}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            Вы принимаете аккредитив?
+                            {language.values.faqsScreen.text15}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            Мы принимаем только банковские переводы и не принимаем аккредитивы.
+                            {language.values.faqsScreen.text16}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            Какие условия оплаты?
+                            {language.values.faqsScreen.text17}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            Перед отправкой автомобиль должен быть оплачен на 100%. При покупке автомобиля на аукционах полная оплата требуется в течение 3-5 рабочих дней, включая дату покупки.
+                            {language.values.faqsScreen.text18}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color2 }]}>
-                            Есть ли возможность кредитования?
+                            {language.values.faqsScreen.text19}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color2 }]}>
-                            Нет, мы отправим ваш автомобиль только после того, как банк подтвердит вашу полную оплату.
+                            {language.values.faqsScreen.text20}
                         </Text>
                     </View>
                 </View>
@@ -163,7 +171,7 @@ export default function questionScreen({ navigation }) {
                 }}>
                     <View style={styles.textContainer} >
                         <Text style={styles.text} >
-                            Оформление и доставка
+                            {language.values.faqsScreen.shiping}
                         </Text>
                         <AntDesign name={aFullText3 > 0 ? "up" : "down"} size={20} color="#168dd0" />
                     </View>
@@ -171,40 +179,40 @@ export default function questionScreen({ navigation }) {
                 <View style={[styles.subtextContainer, { height: aFullText3 }]}>
                     <View>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Сколько стоит морская доставка?
+                        {language.values.faqsScreen.text21}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        Морские перевозки могут быть изменены в зависимости от цен на нефть и обменных курсов валют. Это также зависит от сезона, размера транспортного средства, типа перевозки, будь то контейнер 20-40 футов для нескольких транспортных средств или RORO в случае только одного. Вы всегда МОЖЕТЕ проконсультироваться о наилучшем и наиболее разумном способе доставки вашего автомобиля перед покупкой.
+                        {language.values.faqsScreen.text22}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Гарантирована ли доставка?
+                        {language.values.faqsScreen.text23}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        Стоимость страховки не включена в окончательную цену, но груз может быть застрахован за дополнительную плату.
+                        {language.values.faqsScreen.text24}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Сколько времени нужно судну, чтобы прибыть в порт?
+                        {language.values.faqsScreen.text25}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        Это зависит от порта назначения. Как правило, после отправки из Японии доставка в далекие порты занимает около трех-пяти недель. У нас есть связи с несколькими судоходными компаниями.
+                        {language.values.faqsScreen.text26}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Когда моя машина будет отправлена?
+                        {language.values.faqsScreen.text27}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        Ваш автомобиль отправляется на отгрузку, как только вы вносите платеж в соответствии с ранее согласованными условиями оплаты.
+                        {language.values.faqsScreen.text28}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Информируются ли клиенты о процессе отгрузки?
+                        {language.values.faqsScreen.text29}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        Да, Coral-Network всегда информирует своих клиентов о доставке автомобилей и отправке документов.
+                        {language.values.faqsScreen.text30}
                         </Text>
                         <Text style={[styles.subtextTitle, { color: color3 }]}>
-                        Какие документы я получу?
+                        {language.values.faqsScreen.text31}
                         </Text>
                         <Text style={[styles.subtextInfo2, { color: color3 }]}>
-                        BL (Landing Bill of Landing - заверенная копия или оригинал){'\n'}{'\n'}Счет-фактура / Счет{'\n'}{'\n'}Экспортный сертификат (перевод на английский только при необходимости за дополнительную плату)
+                        {language.values.faqsScreen.text32}
                         </Text>
                     </View>
                 </View>

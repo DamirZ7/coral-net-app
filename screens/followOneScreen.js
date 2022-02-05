@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, SafeAreaView, Text, Image, ScrollView, ActivityIndicator, FlatList } from 'react-native';
+import URL from '../keys/keys'
 
 
 export default function followOneScreen({ navigation, route }) {
 
-    const { id, login, pass } = route.params
+    const { id, language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.followOneScreen.searchResult,
+        })
+    }, [language])
 
     const [loading, setLoading] = useState(true)
-    const [data, setData] = useState([])
+    const [resDataPars, setResDataPars] = useState([])
     const [alert, setAlert] = useState()
 
     useEffect(() => {
@@ -18,12 +25,12 @@ export default function followOneScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://coralserver.ddns.net:8000/follow/view/${id}`, requestOptions)
+        fetch(`${URL}/follow/view/${id}`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.cars.length > 0) {
                     //console.log(data.cars)
-                    setData(data.cars)
+                    setResDataPars(data.cars)
                     setLoading(false)
                 } else {
                     setLoading(false)
@@ -37,74 +44,80 @@ export default function followOneScreen({ navigation, route }) {
             })
     }, [])
 
-
     const carsRenderList = ({ item }) => {
-        
-        let carImage = { uri: item.img }
-        if (!item.img) {
+
+        if (!item.foto) {
             return (
                 <View></View>
             )
         } else {
-            const carInfo = item.carType.split(' ')
-            const hp = item.carPower.split(' ')
-            const option = hp[1].split('cc')
-            const date = item.date.split('[')
+            const image = item.foto.split('/').map(it => it === 'https:' ? 'http:' : it).join('/')
+            let carImage = { uri: image }
             let newCar = item.new
-           
             return (
                 <TouchableOpacity style={styles.buttonCarList} onPress={() => {
-                    const index = data.findIndex(it => it.auction_num === item.auction_num)
-                 
                     navigation.navigate('selectedCarScreen', {
-                        aucNumber: item.auction_num,
-                        startPrice: item.carPrice,
-                        year: carInfo[0],
+                        corner: item[0],
+                        aacount: item[1],
+                        exhnum: item[2],
+                        auction: item.auction,
+                        aucDate: item.aucDate,
+                        car: item.car,
+                        car1: item.car1,
+                        color: item.color,
+                        inspect: item.inspect,
+                        lotNum: item.lotNum,
+                        lotNum1: item.lotNum1,
+                        model: item.model,
+                        model1: item.model1,
+                        odo: item.odo,
+                        options: item.options,
+                        options1: item.options1,
+                        price: item.price,
                         rate: item.rate,
-                        mileage: item.mileage,
-                        auc: item.carAuction,
-                        date: date[0],
-                        carBody: carInfo[1],
-                        motor: option[0],
-                        complect: item.carComplect,
-                        option1: option[1],
-                        option2: hp[0],
-                        //img: carImage,
-                        src: item.src,
-                        login: login,
-                        pass: pass,
-                        id: id,
-                        index: index
+                        year: item.year,
+                        year1: item.year1,
+                        language: language,
                     })
                 }}>
                     <View>
-                        {newCar === 'true' ? (<View style={{ backgroundColor: '#168dd0', width: '100%', height: 3 }}></View>) : (<View></View>)}
+                        {newCar ? <View style={{ width: '100%', height: 3, backgroundColor: '#168dd0', borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}></View> : <View></View>}
                     </View>
                     <View style={styles.headerInfo}>
-                        <Text>Номер лота: {item.auction_num}</Text>
-                        <Text>Стартовая цена: {item.carPrice}</Text>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#168dd0' }}>{item.car}</Text>
+                        <Text style={{ color: 'gray' }}>{language.values.followOneScreen.year}: {item.year} {item.year1}</Text>
                     </View>
                     <View>
-                        <View style={{ width: '95%', height: 180, marginLeft: '2.5%' }} >
-                            <Image source={carImage} style={{ width: '100%', height: '100%', borderRadius: 15 }} />
+                        <View style={{ width: '95%', height: 200, marginLeft: '2.5%' }}>
+                            <Image
+                                source={carImage}
+                                //resizeMode='contain'
+                                style={{ width: '100%', height: '100%', borderRadius: 5 }}
+                            />
                         </View>
                     </View>
                     <View style={styles.middleInfo}>
-                        <Text>Год: {carInfo[0]}</Text>
-                        <Text>Оценка: {item.rate}</Text>
-                        <Text>Пробег: {item.mileage}km</Text>
+                        <Text>{language.values.followOneScreen.price}: {item.price}</Text>
+                        <Text>{language.values.followOneScreen.rate}: {item.rate}</Text>
                     </View>
                     <View style={styles.footerInfoContainer}>
                         <View style={styles.footerInfo1}>
-                            <Text>Аукцион: {item.carAuction}</Text>
-                            <Text>Дата: {date[0]}</Text>
-                            <Text>Кузов: {carInfo[1]}</Text>
-                            <Text>Обьем: {option[0]}cc</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.range}: {item.odo}km</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.inspection}: {item.inspect}</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.carBody}: {item.model}</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.engine}: {item.model1}cc</Text>
+                            <Text style={{ color: 'gray'}}>{language.values.followOneScreen.color}: {item.color}</Text>
                         </View>
                         <View style={styles.footerInfo2}>
-                            <Text>Комплектация: {item.carComplect}</Text>
-                            <Text>Дополнительная информация: {option[1]}{hp[0]}</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.lotNum}: {item.lotNum} {item.lotNum1}</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.complect}: {item.car1}</Text>
+                            <Text style={{ color: 'gray', paddingBottom: 2 }}>{language.values.followOneScreen.options}: {item.options}, {item.options1}</Text>
+                            <Text style={{ color: 'gray' }}>Deadline: {item.deadline} {item.deadline1}</Text>
                         </View>
+                    </View>
+                    <View style={styles.underInfo}>
+                        <Text>{language.values.followOneScreen.auction}: {item.auction}</Text>
+                        <Text>{item.aucDate}</Text>
                     </View>
                 </TouchableOpacity>
             )
@@ -115,6 +128,7 @@ export default function followOneScreen({ navigation, route }) {
         <SafeAreaView style={{ backgroundColor: '#fff' }} >
             {loading ? (
                 <View style={styles.activity}>
+                    <Text style={{ fontSize: 26, marginBottom: 15 }}>{language.values.followOneScreen.loading}</Text>
                     <ActivityIndicator
                         visible={loading}
                         size='large'
@@ -124,14 +138,14 @@ export default function followOneScreen({ navigation, route }) {
             ) : (
                 <View>
                     <View style={styles.searchNum}>
-                        {alert ? (
+                        {(resDataPars[0] === 'Ничего не найдено, измените параметры поиска') ? (
                             <View>
-                                <Text style={{ fontSize: 16, paddingTop: 50 }}>На сервере произошла ошибка, повторите поиск</Text>
-                                <Image source={require('../Data/images/carError.jpg')} style={{ width: '95%', height: 140, marginTop: 50 }} />
+                                <Text style={{ fontSize: 16, paddingTop: 50 }}>{language.values.followOneScreen.searchErr}</Text>
+                                {/* <Image source={require('../Data/images/carError.jpg')} style={{ width: '95%', height: 140, marginTop: 50 }} /> */}
                             </View>
                         ) : (
                             <View>
-                                {/* <Text>{carsNumber[0]}</Text> */}
+
                             </View>
                         )
                         }
@@ -139,7 +153,7 @@ export default function followOneScreen({ navigation, route }) {
                     </View>
                     <View>
                         <FlatList
-                            data={data}
+                            data={resDataPars}
                             contentContainerStyle={{ paddingBottom: '50%' }}
                             horizontal={false}
                             renderItem={carsRenderList}
@@ -167,7 +181,7 @@ const styles = StyleSheet.create({
 
     },
     searchNum: {
-        marginVertical: 0,
+        marginVertical: 7,
         marginLeft: 14,
         backgroundColor: '#fff'
     },
@@ -207,21 +221,28 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     footerInfo1: {
-        width: '50%',
-        borderWidth: 1,
-        borderColor: 'gray',
+        width: '52%',
+        //borderWidth: 1,
+        //borderColor: 'gray',
         marginRight: 15,
-        padding: 5,
-        borderRadius: 4
+        padding: 0,
+        //borderRadius: 5
     },
     footerInfo2: {
         width: '50%',
-        marginRight: 14,
-        borderWidth: 1,
+        marginRight: 10,
+        //borderWidth: 1,
+        //borderColor: 'gray',
+        padding: 0,
+        //borderRadius: 5,
+    },
+    underInfo: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 10,
+        paddingVertical: 7,
+        borderTopWidth: 1,
         borderColor: 'gray',
-        padding: 5,
-        borderRadius: 5,
     }
 
 })
-

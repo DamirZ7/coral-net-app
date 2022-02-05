@@ -1,71 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, Modal, FlatList, SafeAreaView } from 'react-native';
 import calculateAuctions from '../Data/calculateAuctions';
 import { FontAwesome } from '@expo/vector-icons';
 
-
-const carTypesData = [
-    {
-        id: 1,
-        title: 'Целый автомобиль'
-    },
-    {
-        id: 2,
-        title: 'Распил легковой'
-    },
-    {
-        id: 3,
-        title: 'Распил рамный'
-    },
-    {
-        id: 4,
-        title: 'Конструктор легковой'
-    },
-    {
-        id: 5,
-        title: 'Конструктор джип, микроавтобус'
-    },
-    {
-        id: 6,
-        title: 'Запчасти на палете'
-    }
-]
-
-const fuelTypesData = [
-    {
-        id: 1,
-        title: 'Бензин (гибрид включительно)'
-    },
-    {
-        id: 2,
-        title: 'Дизельное топливо'
-    },
-    {
-        id: 3,
-        title: 'Электричество'
-    }
-]
-
-const carOld = [
-    {
-        id: 1,
-        title: 'Меньше 3 лет'
-    },
-    {
-        id: 2,
-        title: 'От 3 до 5 лет'
-    },
-    {
-        id: 3,
-        title: 'От 5 до 7 лет'
-    },
-    {
-        id: 4,
-        title: 'Больше 7 лет'
-    }
-]
-
 export default function calculateScreen({ navigation, route }) {
+
+    const { language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.calcScreen.calc,
+        })
+    }, [language])
 
     const [selectedType, setSelectedType] = useState(1)
     const [selectedFuel, setSelectedFuel] = useState(1)
@@ -76,6 +22,67 @@ export default function calculateScreen({ navigation, route }) {
     const [aucPrice, setAucPrice] = useState(0)
     const [horsePower, setHorsePower] = useState(240)
     const [motorV, setMotorV] = useState(0)
+
+    const carTypesData = [
+        {
+            id: 1,
+            title: language.values.calcScreen.carType1
+        },
+        {
+            id: 2,
+            title: language.values.calcScreen.carType2
+        },
+        {
+            id: 3,
+            title: language.values.calcScreen.carType3
+        },
+        {
+            id: 4,
+            title: language.values.calcScreen.carType4
+        },
+        {
+            id: 5,
+            title: language.values.calcScreen.carType5
+        },
+        {
+            id: 6,
+            title: language.values.calcScreen.carType6
+        }
+    ]
+    
+    const fuelTypesData = [
+        {
+            id: 1,
+            title: language.values.calcScreen.fuel1
+        },
+        {
+            id: 2,
+            title: language.values.calcScreen.fuel2
+        },
+        {
+            id: 3,
+            title: language.values.calcScreen.fuel3
+        }
+    ]
+    
+    const carOld = [
+        {
+            id: 1,
+            title: language.values.calcScreen.carOld1
+        },
+        {
+            id: 2,
+            title: language.values.calcScreen.carOld2
+        },
+        {
+            id: 3,
+            title: language.values.calcScreen.carOld3
+        },
+        {
+            id: 4,
+            title: language.values.calcScreen.carOld4
+        }
+    ]
 
     const renderCarTypesData = ({ item }) => {
         return (
@@ -132,16 +139,16 @@ export default function calculateScreen({ navigation, route }) {
 
             <View style={styles.aucPrice}>
                 <Text style={styles.text}>
-                    Цена на аукционе, ¥
+                    {language.values.calcScreen.aucPrice}
                 </Text>
-                <TextInput placeholder='Введите цену' style={styles.textInput} keyboardType='numeric' maxLength={8} onChangeText={(text) => {setAucPrice(text)}}/>
+                <TextInput placeholder={language.values.calcScreen.inputPrice} style={styles.textInput} keyboardType='numeric' maxLength={8} onChangeText={(text) => {setAucPrice(text)}}/>
             </View>
 
             <View style={styles.aucPrice}>
                 <Text style={styles.text}>
-                    Аукцион
+                    {language.values.calcScreen.auc}
                 </Text>
-                <TextInput placeholder='Выберите аукцион' style={styles.textInput} onFocus={() => { setModalVisible(true) }} value={inputVal} />
+                <TextInput placeholder={language.values.calcScreen.selectAuc} style={styles.textInput} onFocus={() => { setModalVisible(true) }} value={inputVal} />
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -152,7 +159,7 @@ export default function calculateScreen({ navigation, route }) {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <Text style={{paddingBottom: 10}}>
-                                Выберите аукцион и нажмите Ok
+                                {language.values.calcScreen.aucModal}
                             </Text>
                             <FlatList
                                 data={calculateAuctions}
@@ -180,7 +187,7 @@ export default function calculateScreen({ navigation, route }) {
 
             <View style={styles.carType}>
                 <Text style={styles.text}>
-                    Тип услуги
+                    {language.values.calcScreen.serviceType}
                 </Text>
                 <View style={styles.checkListContainer}>
                     <FlatList
@@ -195,7 +202,7 @@ export default function calculateScreen({ navigation, route }) {
 
             <View style={styles.carType}>
                 <Text style={styles.text}>
-                    Тип топлива
+                    {language.values.calcScreen.fuelType}
                 </Text>
                 <View style={styles.checkListContainer}>
                     <FlatList
@@ -210,21 +217,21 @@ export default function calculateScreen({ navigation, route }) {
 
             <View style={styles.aucPrice}>
                 <Text style={styles.text}>
-                    Обьем двигателя,{'\n'}см.куб
+                    {language.values.calcScreen.engine}
                 </Text>
-                <TextInput placeholder='Введите обьем' style={styles.textInput} keyboardType='numeric' maxLength={4} onChangeText={(text) => {setMotorV(text)}}/>
+                <TextInput placeholder={language.values.calcScreen.selectEngine} style={styles.textInput} keyboardType='numeric' maxLength={4} onChangeText={(text) => {setMotorV(text)}}/>
             </View>
 
             <View style={styles.aucPrice}>
                 <Text style={styles.text}>
-                    Мощность в л.с.
+                    {language.values.calcScreen.hp}
                 </Text>
-                <TextInput placeholder='Введите мощность' style={styles.textInput} keyboardType='numeric' maxLength={3} defaultValue={horsePower.toString()} onChangeText={(text) => {setHorsePower(text)}}/>
+                <TextInput placeholder={language.values.calcScreen.inputHp} style={styles.textInput} keyboardType='numeric' maxLength={3} defaultValue={horsePower.toString()} onChangeText={(text) => {setHorsePower(text)}}/>
             </View>
 
             <View style={styles.carType}>
                 <Text style={styles.text}>
-                    Возраст автомобиля
+                    {language.values.calcScreen.carYear}
                 </Text>
                 <View style={styles.checkListContainer}>
                     <FlatList
@@ -246,11 +253,12 @@ export default function calculateScreen({ navigation, route }) {
                         fuelType: selectedFuel,
                         horsePower: horsePower,
                         carOld: selectedOld,
-                        motorV: motorV
+                        motorV: motorV,
+                        language: language
                     })
                 }}>
                     <Text style={{ color: 'white', fontSize: 16 }}>
-                        Рассчитать
+                        {language.values.calcScreen.calculate}
                     </Text>
                 </TouchableOpacity>
 

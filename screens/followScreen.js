@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput, Text, SafeAreaView, ScrollView, ActivityIndicator, FlatList, SafeAreaViewBase } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import URL from '../keys/keys'
 
 export default function followScreen({ navigation, route }) {
 
-    const { carsBarnd, carsMod, carsRate, year_start, year_end, range_start, range_end, login, pass } = route.params
+    const { language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.followScreen.autoSearch,
+        })
+    }, [language])
 
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState([])
@@ -19,7 +26,7 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch('http://coralserver.ddns.net:8000/follow', requestOptions)
+        fetch(`${URL}/follow`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 setData(data)
@@ -40,7 +47,7 @@ export default function followScreen({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://coralserver.ddns.net:8000/follow/remove/${id}`, requestOptions)
+        fetch(`${URL}/follow/remove/${id}`, requestOptions)
             .then(response => response.json())
             .then(message => {
                 console.log(message)
@@ -59,18 +66,16 @@ export default function followScreen({ navigation, route }) {
         const date = responseDate[0].split('T')
 
         const id = item._id
-        const carNumber = item.cars.find((it) => {
-            return it.num_cars
-        })
-        const cars = carNumber.num_cars.split(' ').slice(1).join(' ')
+        const car = item.cars[0]
+        const carName = car.car
+        
        
         return (
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 15, marginTop: 5 }}>
                 <TouchableOpacity style={{ backgroundColor: '#fff', width: '75%', height: 60, elevation: 10, alignItems: 'center', justifyContent: 'center' }} onPress={() => {
                     navigation.navigate('followOneScreen', {
                         id: id,
-                        login: login,
-                        pass: pass
+                        language: language
                     })
                 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
@@ -79,7 +84,7 @@ export default function followScreen({ navigation, route }) {
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                        <Text>{cars}</Text>
+                        <Text>{carName}</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -103,13 +108,12 @@ export default function followScreen({ navigation, route }) {
             <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: 80, marginTop: 10, marginBottom: 25 }}>
                 <TouchableOpacity onPress={() => {
                     navigation.navigate('Auction', {
-                        login: login,
-                        pass: pass,
-                        follow: true
+                        follow: true,
+                        language: language
                     })
                 }} style={{ width: '50%', height: '100%', flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', borderRadius: 0, elevation: 10 }}>
                     <FontAwesome name="plus-square-o" size={30} color="#168dd0" />
-                    <Text style={{ marginTop: 10 }}>Новый поисковой запрос</Text>
+                    <Text style={{ marginTop: 10 }}>{language.values.followScreen.newReq}</Text>
                 </TouchableOpacity>
             </View>
             <View>

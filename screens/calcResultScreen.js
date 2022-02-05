@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput, Text, Image, ScrollView, StatusBar, ActivityIndicator, SafeAreaView } from 'react-native';
+import URL from '../keys/keys'
 
 export default function calcResultScreen({ navigation, route }) {
 
     const [resCalcPars, setResCalcPars] = useState([])
 
-    const { carPrice, auction, carType, fuelType, horsePower, carOld, motorV } = route.params
-    console.log([carPrice, auction, carType, fuelType, horsePower, carOld, motorV]);
+    const { carPrice, auction, carType, fuelType, horsePower, carOld, motorV, language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.calcResultScreen.calcRes,
+        })
+    }, [language])
 
     useEffect(() => {
         const requestOptions = {
@@ -28,11 +34,11 @@ export default function calcResultScreen({ navigation, route }) {
             })
         }
 
-        fetch('http://coralserver.ddns.net:8000/calculate', requestOptions)
+        fetch(`${URL}/calculate`, requestOptions)
             .then(response => response.json())
             .then(data => {
-                setResCalcPars(data.calc)
-                console.log(data.calc);
+                setResCalcPars(data)
+                //console.log(data);
 
             })
             .catch((err) => {
@@ -45,7 +51,7 @@ export default function calcResultScreen({ navigation, route }) {
         if (it) {
             return it.price
         } else {
-            return 'Ошибка, повторите запрос'
+            return language.values.calcResultScreen.calcErr
         }
     })
 
@@ -97,51 +103,51 @@ export default function calcResultScreen({ navigation, route }) {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.resContainer}>
-                    <Text style={styles.resText}>Итоговая стоимость во Владивостоке</Text>
-                    <Text style={styles.resValue}>{result} рублей</Text>
+                    <Text style={styles.resText}>{language.values.calcResultScreen.finishPrice}</Text>
+                    <Text style={styles.resValue}>{result} {language.values.calcResultScreen.rub}</Text>
                 </View>
 
                 <View style={styles.infoContainer}>
                     <View style={styles.headTitle}>
-                        <Text style={styles.headTitleText}>Расходы по Японии</Text>
+                        <Text style={styles.headTitleText}>{language.values.calcResultScreen.japanCosts}</Text>
                     </View>
 
                     <View style={styles.subContainer}>
-                        <Text style={styles.subText}>Цена на аукционе</Text>
-                        <Text style={styles.subValue}>{price} йен</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.aucPrice}</Text>
+                        <Text style={styles.subValue}>{price} {language.values.calcResultScreen.jap}</Text>
 
-                        <Text style={styles.subText}>FOB Тояма</Text>
-                        <Text style={styles.subValue}>{fobToyama} йен</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.fob}</Text>
+                        <Text style={styles.subValue}>{fobToyama} {language.values.calcResultScreen.jap}</Text>
 
-                        <Text style={styles.subText}>Доставка до Владивостока</Text>
-                        <Text style={styles.subValue}>{freightJp} йен / {freightRf} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.vladivostokShip}</Text>
+                        <Text style={styles.subValue}>{freightJp} {language.values.calcResultScreen.jap} / {freightRf} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Итого C&F Владивосток</Text>
-                        <Text style={styles.subValue}>{rowRf} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.cf}</Text>
+                        <Text style={styles.subValue}>{rowRf} {language.values.calcResultScreen.rub}</Text>
                     </View>
 
                     <View style={styles.headTitle}>
-                        <Text style={styles.headTitleText}>Таможенные платежи</Text>
+                        <Text style={styles.headTitleText}>{language.values.calcResultScreen.custom}</Text>
                     </View>
 
                     <View style={styles.subContainer}>
-                        <Text style={styles.subText}>Услуги по таможенному оформлению, СВХ, СБКТС</Text>
-                        <Text style={styles.subValue}>{customDoc} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.svh}</Text>
+                        <Text style={styles.subValue}>{customDoc} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Установка оборудования Эра-Глонас</Text>
-                        <Text style={styles.subValue}>{glonas} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.glonas}</Text>
+                        <Text style={styles.subValue}>{glonas} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Утилизационный сбор</Text>
-                        <Text style={styles.subValue}>{recycle} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.util}</Text>
+                        <Text style={styles.subValue}>{recycle} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Таможенная пошлина</Text>
-                        <Text style={styles.subValue}>{taxPay} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.duty}</Text>
+                        <Text style={styles.subValue}>{taxPay} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Итого таможенные платежи</Text>
-                        <Text style={styles.subValue}>{totalTax} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.fullCustom}</Text>
+                        <Text style={styles.subValue}>{totalTax} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Итоговая стоимость во Владивостоке</Text>
-                        <Text style={styles.subValue}>{result} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.finishPrice}</Text>
+                        <Text style={styles.subValue}>{result} {language.values.calcResultScreen.rub}</Text>
                     </View>
                 </View>
             </ScrollView>
@@ -151,39 +157,39 @@ export default function calcResultScreen({ navigation, route }) {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.resContainer}>
-                    <Text style={styles.resText}>Итоговая стоимость во Владивостоке</Text>
-                    <Text style={styles.resValue}>{result} рублей</Text>
+                    <Text style={styles.resText}>{language.values.calcResultScreen.finishPrice}</Text>
+                    <Text style={styles.resValue}>{result} {language.values.calcResultScreen.rub}</Text>
                 </View>
 
                 <View style={styles.infoContainer}>
                     <View style={styles.headTitle}>
-                        <Text style={styles.headTitleText}>Расходы по Японии</Text>
+                        <Text style={styles.headTitleText}>{language.values.calcResultScreen.japanCosts}</Text>
                     </View>
 
                     <View style={styles.subContainer}>
-                        <Text style={styles.subText}>Цена на аукционе</Text>
-                        <Text style={styles.subValue}>{price} йен</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.aucPrice}</Text>
+                        <Text style={styles.subValue}>{price} {language.values.calcResultScreen.jap}</Text>
 
-                        <Text style={styles.subText}>FOB Тояма</Text>
-                        <Text style={styles.subValue}>{fobToyama} йен</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.fob}</Text>
+                        <Text style={styles.subValue}>{fobToyama} {language.values.calcResultScreen.jap}</Text>
 
-                        <Text style={styles.subText}>Распил / фрахт</Text>
-                        <Text style={styles.subValue}>{freightUsd} долларов / {freightRf} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.fraght}</Text>
+                        <Text style={styles.subValue}>{freightUsd} {language.values.calcResultScreen.usd} / {freightRf} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Итого C&F Владивосток</Text>
-                        <Text style={styles.subValue}>{rowRf} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.cf}</Text>
+                        <Text style={styles.subValue}>{rowRf} {language.values.calcResultScreen.rub}</Text>
                     </View>
 
                     <View style={styles.headTitle}>
-                        <Text style={styles.headTitleText}>Таможенные платежи</Text>
+                        <Text style={styles.headTitleText}>{language.values.calcResultScreen.custom}</Text>
                     </View>
 
                     <View style={styles.subContainer}>
-                        <Text style={styles.subText}>Услуги по таможенному оформлению</Text>
-                        <Text style={styles.subValue}>{customDoc} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.svh}</Text>
+                        <Text style={styles.subValue}>{customDoc} {language.values.calcResultScreen.rub}</Text>
 
-                        <Text style={styles.subText}>Итоговая стоимость во Владивостоке</Text>
-                        <Text style={styles.subValue}>{result} рублей</Text>
+                        <Text style={styles.subText}>{language.values.calcResultScreen.finishPrice}</Text>
+                        <Text style={styles.subValue}>{result} {language.values.calcResultScreen.rub}</Text>
                     </View>
                 </View>
             </ScrollView>

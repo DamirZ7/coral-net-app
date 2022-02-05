@@ -18,11 +18,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import URL from './keys/keys'
 
 const Stack = createStackNavigator()
 
 export default function Navigate() {
-
+   
     const logout = (navigation) => {
         const requestOptions = {
             method: 'GET',
@@ -31,7 +32,7 @@ export default function Navigate() {
                 'Content-Type': 'application/json'
             },
         }
-        fetch(`http://coralserver.ddns.net:8000/auth/logout`, requestOptions)
+        fetch(`${URL}/login/logout`, requestOptions)
             .then(response => response.json())
             .then(message => {
                 console.log(message)
@@ -142,7 +143,7 @@ export default function Navigate() {
                 <Stack.Screen
                     name='followScreen'
                     component={followScreen}
-                    options={{title: 'Избранное'}}                    
+                    options={{title: 'Автоматический поиск'}}                    
                 />
                  <Stack.Screen
                     name='followOneScreen'

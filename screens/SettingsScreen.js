@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, FlatList, Image, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import auctions from '../Data/auctions';
+import odo from '../Data/odo';
+import engine from '../Data/engine';
+import color from '../Data/color'
 import ratings from '../Data/ratings';
-import status from '../Data/status';
+import inspection from '../Data/inspection';
 import { Ionicons } from '@expo/vector-icons';
+import URL from '../keys/keys'
 
 export default function SettingsScreen({ navigation, route }) {
 
-  const { carsMod, carsBarnd, login, pass, follow } = route.params
+  const { carsMod, carsBarnd, follow, language } = route.params
+
+  useEffect(() => {
+    navigation.setOptions({
+        title: language.values.settingsScreen.params,
+    })
+}, [language])
 
   const [loading, setLoading] = useState(true)
   const [followModal, setFollowModal] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
 
-  const followFunc = (carsBarnd, carsMod, carsAuc, carsRate, carsStatus, year_start, year_end, range_start, range_end, login, pass) => {
+  const followFunc = (carsBarnd, carsMod, engine, carsRate, carInspect, year_start, year_end, range_start, range_end, color, altColor) => {
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -24,32 +33,32 @@ export default function SettingsScreen({ navigation, route }) {
       body: JSON.stringify({
         car: carsBarnd,
         model: carsMod,
+        engine: engine,
         rate: carsRate,
-        status: carsStatus,
-        auction: carsAuc,
+        inspect: carInspect,
         yearS: year_start,
         yearE: year_end,
         rangeS: range_start,
         rangeE: range_end,
-        login: login,
-        pass: pass,
+        color: color,
+        altColor: altColor,
         follow: follow
       })
     }
 
-    fetch('http://coralserver.ddns.net:8000/follow/add', requestOptions)
+    fetch(`${URL}/follow/add`, requestOptions)
       .then(response => response.json())
       .then(data => {
         if (data === 'Ничего не найдено') {
           setLoading(false)
           setFollowModal(false)
           setErrorModal(true)
-          console.log(data)
+          //console.log(data)
         } else {
           console.log(data)
           setLoading(false)
           setFollowModal(false)
-          navigation.navigate('Home')
+          navigation.navigate('Home', {language: language})
         }
       })
       .catch((err) => {
@@ -61,48 +70,55 @@ export default function SettingsScreen({ navigation, route }) {
   }
 
 
-  const [aucList, setAucList] = useState(auctions)
+  const [aucList, setAucList] = useState(engine)
   const [modalVisible, setModalVisible] = useState(false)
   const [aucInputVal, setAucInputVal] = useState()
-  const [selectedItem, setSelectedItem] = useState([])
+  const [selectedItem, setSelectedItem] = useState()
 
   const [rateList, setRateList] = useState(ratings)
   const [rateModalVisible, setRateModalVisible] = useState(false)
   const [rateInputVal, setRateInputVal] = useState()
-  const [rateSelectedItem, setRateSelectedItem] = useState([])
+  const [rateSelectedItem, setRateSelectedItem] = useState()
 
-  const [statusList, setStatusList] = useState(status)
-  const [statusModalVisible, setStatusModalVisible] = useState(false)
-  const [statusInputVal, setStatusInputVal] = useState()
-  const [statusSelectedItem, setStatusSelectedItem] = useState([])
+  const [inspectList, setInspectList] = useState(inspection)
+  const [inspectModalVisible, setInspectModalVisible] = useState(false)
+  const [inspectInputVal, setInspectInputVal] = useState()
+  const [inspectSelectedItem, setInspectSelectedItem] = useState()
 
-  const [year_start, setYearStart] = useState()
-  const [year_end, setYearEnd] = useState(2021)
+  const [year_start, setYearStart] = useState('')
+  const [year_end, setYearEnd] = useState('')
 
-  const [range_start, setRangeStart] = useState(0)
-  const [range_end, setRangeEnd] = useState(500000)
+  const [range_start, setRangeStart] = useState(odo)
+  const [rangeStartModal, setRangeStartModal] = useState(false)
+  const [rangeStartInputVal, setRangeStartInputVal] = useState()
+  const [rangeStartSelectedItem, setRangeStartSelectedItem] = useState()
+
+  const [range_end, setRangeEnd] = useState(odo)
+  const [rangeEndModal, setRangeEndModal] = useState(false)
+  const [rangeEndInputVal, setRangeEndInputVal] = useState()
+  const [rangeEndSelectedItem, setRangeEndSelectedItem] = useState()
+
+  const [colorList, setColorList] = useState(color)
+  const [colorModalVisible, setColorModalVisible] = useState(false)
+  const [colorInputVal, setColorInputVal] = useState()
+  const [colorSelectedItem, setColorSelectedItem] = useState()
+
+  const [altColorList, setAltColorList] = useState(color)
+  const [altColorModalVisible, setAltColorModalVisible] = useState(false)
+  const [altColorInputVal, setAltColorInputVal] = useState()
+  const [altColorSelectedItem, setAltColorSelectedItem] = useState()
 
 
-
-  // Выбор аукционов
-
-  const selectedHandler = (id) => {
-    const copySelectedItem = [...selectedItem]
-    const index = copySelectedItem.indexOf(id)
-    if (index === -1)
-      copySelectedItem.push(id)
-    else
-      copySelectedItem.splice(index, 1)
-    setSelectedItem(copySelectedItem)
-  }
+  // Выбор двигателя
 
   const renderAucItems = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => {
-        selectedHandler(item.id)
+        setSelectedItem(item.id)
+        setAucInputVal(item.title)
       }}>
         <View style={styles.flatItems}>
-          <FontAwesome name={selectedItem.includes(item.id) ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <FontAwesome name={selectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
           <Text style={{ paddingLeft: 20, paddingRight: '20%' }}>{item.title}</Text>
         </View>
 
@@ -110,25 +126,16 @@ export default function SettingsScreen({ navigation, route }) {
     )
   }
 
-  // Выбор оценок
+  // Выбор года
 
-  const rateSelectedHandler = (id) => {
-    const copyRateSelectedItem = [...rateSelectedItem]
-    const index = copyRateSelectedItem.indexOf(id)
-    if (index === -1)
-      copyRateSelectedItem.push(id)
-    else
-      copyRateSelectedItem.splice(index, 1)
-    setRateSelectedItem(copyRateSelectedItem)
-  }
-
-  const renderRateItems = ({ item }) => {
+  const renderRangeStartItems = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => {
-        rateSelectedHandler(item.id)
+        setRangeStartSelectedItem(item.id)
+        setRangeStartInputVal(item.title)
       }}>
         <View style={styles.flatItems}>
-          <FontAwesome name={rateSelectedItem.includes(item.id) ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <FontAwesome name={rangeStartSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
           <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
         </View>
 
@@ -136,26 +143,79 @@ export default function SettingsScreen({ navigation, route }) {
     )
   }
 
-  // Выбор статуса
-
-  const statusSelectedHandler = (id) => {
-    const copyStatusSelectedItem = [...statusSelectedItem]
-    const index = copyStatusSelectedItem.indexOf(id)
-    if (index === -1)
-      copyStatusSelectedItem.push(id)
-    else
-      copyStatusSelectedItem.splice(index, 1)
-    setStatusSelectedItem(copyStatusSelectedItem)
-  }
-
-  const renderStatusItems = ({ item }) => {
+  const renderRangeEndItems = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => {
-        statusSelectedHandler(item.id)
+        setRangeEndSelectedItem(item.id)
+        setRangeEndInputVal(item.title)
       }}>
         <View style={styles.flatItems}>
-          <FontAwesome name={statusSelectedItem.includes(item.id) ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
-          <Text style={{ paddingLeft: 20, paddingRight: '50%' }}>{item.title}</Text>
+          <FontAwesome name={rangeEndSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  // Выбор цвета
+
+  const renderColorItems = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        setColorSelectedItem(item.id)
+        setColorInputVal(item.title)
+      }}>
+        <View style={styles.flatItems}>
+          <FontAwesome name={colorSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  const renderAltColorItems = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        setAltColorSelectedItem(item.id)
+        setAltColorInputVal(item.title)
+      }}>
+        <View style={styles.flatItems}>
+          <FontAwesome name={altColorSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  //  Выбор осмтора и оценки
+
+  const renderInspectItems = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        setInspectSelectedItem(item.id)
+        setInspectInputVal(item.title)
+      }}>
+        <View style={styles.flatItems}>
+          <FontAwesome name={inspectSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  const renderRateItems = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        setRateSelectedItem(item.id)
+        setRateInputVal(item.title)
+      }}>
+        <View style={styles.flatItems}>
+          <FontAwesome name={rateSelectedItem === item.id ? "check-circle-o" : "circle-o"} size={24} color="#168dd0" />
+          <Text style={{ paddingLeft: 20, paddingRight: '75%' }}>{item.title}</Text>
         </View>
 
       </TouchableOpacity>
@@ -167,9 +227,9 @@ export default function SettingsScreen({ navigation, route }) {
     <ScrollView style={{ backgroundColor: '#fff', paddingTop: 10 }}>
       <View>
         <View>
-          <Text style={styles.text}>Аукцион</Text>
+          <Text style={styles.text}>{language.values.settingsScreen.engine}</Text>
           <View style={styles.aucView}>
-            <TextInput placeholder='Выберите аукцион' style={styles.aucArea} onFocus={() => { setModalVisible(true) }} value={aucInputVal} />
+            <TextInput placeholder={language.values.settingsScreen.selectEngine} style={styles.aucArea} onFocus={() => { setModalVisible(true) }} value={aucInputVal} />
             <Modal
               animationType="slide"
               transparent={true}
@@ -180,24 +240,28 @@ export default function SettingsScreen({ navigation, route }) {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={{ paddingBottom: 10 }}>Выберите аукцион и нажмите Ок</Text>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
                   <FlatList
                     data={aucList}
                     horizontal={false}
                     renderItem={renderAucItems}
                     keyExtractor={(item) => item.id.toString()}
                     extraData={selectedItem}
+                    showsVerticalScrollIndicator={false}
                   />
                   <View style={styles.modalBtn}>
-                    <TouchableOpacity onPress={() => { setModalVisible(false) }}>
-                      <Text>Отмена</Text>
+                    <TouchableOpacity onPress={() => {
+                      setModalVisible(false)
+                      setAucInputVal()
+                      setSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                      setAucInputVal(`Выбрано аукционов: ${selectedItem.length}`)
                       setModalVisible(false)
                     }}>
-                      <Text>Ok</Text>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -206,54 +270,54 @@ export default function SettingsScreen({ navigation, route }) {
           </View>
         </View>
 
+
+
         <View style={{ paddingTop: 20 }}>
-          <Text style={styles.text}>Год</Text>
+          <Text style={styles.text}>{language.values.settingsScreen.year}</Text>
           <View style={styles.inputView}>
-            <TextInput placeholder='от' style={styles.inputArea} keyboardType='numeric' maxLength={4} onChangeText={(text) => { setYearStart(text) }} />
-            <TextInput placeholder='до' style={styles.inputArea} keyboardType='numeric' maxLength={4} onChangeText={(text) => { setYearEnd(text) }} />
+            <TextInput placeholder={language.values.settingsScreen.yearStart} style={styles.inputArea} keyboardType='numeric' maxLength={4} onChangeText={(text) => { setYearStart(text) }} />
+            <TextInput placeholder={language.values.settingsScreen.yearEnd} style={styles.inputArea} keyboardType='numeric' maxLength={4} onChangeText={(text) => { setYearEnd(text) }} />
           </View>
         </View>
 
-        <View style={{ paddingTop: 20 }}>
-          <Text style={styles.text}>Пробег</Text>
-          <View style={styles.inputView}>
-            <TextInput placeholder='от' style={styles.inputArea} keyboardType='numeric' maxLength={6} onChangeText={(text) => { setRangeStart(text) }} />
-            <TextInput placeholder='до' style={styles.inputArea} keyboardType='numeric' maxLength={6} onChangeText={(text) => { setRangeEnd(text) }} />
-          </View>
-        </View>
+
 
         <View style={styles.inputView1}>
           <View style={{ width: '48%' }}>
-            <Text style={styles.text}>Статус</Text>
-            <TextInput placeholder='Выберите статус' style={styles.inputArea1} onFocus={() => { setStatusModalVisible(true) }} value={statusInputVal} />
+            <Text style={styles.text}>{language.values.settingsScreen.range}</Text>
+            <TextInput placeholder={language.values.settingsScreen.rangeStart} style={styles.inputArea1} onFocus={() => { setRangeStartModal(true) }} value={rangeStartInputVal} />
             <Modal
               animationType="slide"
               transparent={true}
-              visible={statusModalVisible}
+              visible={rangeStartModal}
               onRequestClose={() => {
-                setStatusModalVisible(false);
+                setRangeStartModal(false);
               }}
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={{ paddingBottom: 10 }}>Выберите статус и нажмите Ок</Text>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
                   <FlatList
-                    data={statusList}
+                    data={range_start}
                     horizontal={false}
-                    renderItem={renderStatusItems}
+                    renderItem={renderRangeStartItems}
                     keyExtractor={(item) => item.id.toString()}
-                    extraData={statusSelectedItem}
+                    extraData={rangeStartSelectedItem}
+                    showsVerticalScrollIndicator={false}
                   />
                   <View style={styles.modalBtn}>
-                    <TouchableOpacity onPress={() => { setStatusModalVisible(false) }}>
-                      <Text>Отмена</Text>
+                    <TouchableOpacity onPress={() => {
+                      setRangeStartModal(false)
+                      setRangeStartInputVal()
+                      setRangeStartSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                      setStatusInputVal(`Выбрано оценок: ${statusSelectedItem.length}`)
-                      setStatusModalVisible(false)
+                      setRangeStartModal(false)
                     }}>
-                      <Text>Ok</Text>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -262,8 +326,95 @@ export default function SettingsScreen({ navigation, route }) {
           </View>
 
           <View style={{ width: '48%' }}>
-            <Text style={styles.text}>Оценка</Text>
-            <TextInput placeholder='Выберите оценку' style={styles.inputArea1} onFocus={() => { setRateModalVisible(true) }} value={rateInputVal} />
+            <Text style={styles.text}></Text>
+            <TextInput placeholder={language.values.settingsScreen.rangeEnd} style={styles.inputArea1} onFocus={() => { setRangeEndModal(true) }} value={rangeEndInputVal} />
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={rangeEndModal}
+              onRequestClose={() => {
+                setRangeEndModal(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
+                  <FlatList
+                    data={range_end}
+                    horizontal={false}
+                    renderItem={renderRangeEndItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    extraData={rangeEndSelectedItem}
+                    showsVerticalScrollIndicator={false}
+                  />
+                  <View style={styles.modalBtn}>
+                    <TouchableOpacity onPress={() => {
+                      setRangeEndModal(false)
+                      setRangeEndInputVal()
+                      setRangeEndSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      setRangeEndModal(false)
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </View>
+
+
+        <View style={styles.inputView1}>
+          <View style={{ width: '48%' }}>
+            <Text style={styles.text}>{language.values.settingsScreen.inspect}</Text>
+            <TextInput placeholder={language.values.settingsScreen.selectInspect} style={styles.inputArea1} onFocus={() => { setInspectModalVisible(true) }} value={inspectInputVal} />
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={inspectModalVisible}
+              onRequestClose={() => {
+                setInspectModalVisible(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
+                  <FlatList
+                    data={inspectList}
+                    horizontal={false}
+                    renderItem={renderInspectItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    extraData={inspectSelectedItem}
+                    showsVerticalScrollIndicator={false}
+                  />
+                  <View style={styles.modalBtn}>
+                    <TouchableOpacity onPress={() => {
+                      setInspectModalVisible(false)
+                      setInspectInputVal()
+                      setInspectSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      setInspectModalVisible(false)
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+
+          <View style={{ width: '48%' }}>
+            <Text style={styles.text}>{language.values.settingsScreen.rate}</Text>
+            <TextInput placeholder={language.values.settingsScreen.selectRate} style={styles.inputArea1} onFocus={() => { setRateModalVisible(true) }} value={rateInputVal} />
             <Modal
               animationType="slide"
               transparent={true}
@@ -274,24 +425,114 @@ export default function SettingsScreen({ navigation, route }) {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={{ paddingBottom: 10 }}>Выберите оценку и нажмите Ок</Text>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
                   <FlatList
                     data={rateList}
                     horizontal={false}
                     renderItem={renderRateItems}
                     keyExtractor={(item) => item.id.toString()}
                     extraData={rateSelectedItem}
+                    showsVerticalScrollIndicator={false}
                   />
                   <View style={styles.modalBtn}>
-                    <TouchableOpacity onPress={() => { setRateModalVisible(false) }}>
-                      <Text>Отмена</Text>
+                    <TouchableOpacity onPress={() => {
+                      setRateModalVisible(false)
+                      setRateInputVal()
+                      setRateSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                      setRateInputVal(`Выбрано оценок: ${rateSelectedItem.length}`)
                       setRateModalVisible(false)
                     }}>
-                      <Text>Ok</Text>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </View>
+
+        <View style={styles.inputView1}>
+          <View style={{ width: '48%' }}>
+            <Text style={styles.text}>{language.values.settingsScreen.color}</Text>
+            <TextInput placeholder={language.values.settingsScreen.colorBase} style={styles.inputArea1} onFocus={() => { setColorModalVisible(true) }} value={colorInputVal} />
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={colorModalVisible}
+              onRequestClose={() => {
+                setColorModalVisible(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
+                  <FlatList
+                    data={colorList}
+                    horizontal={false}
+                    renderItem={renderColorItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    extraData={colorSelectedItem}
+                    showsVerticalScrollIndicator={false}
+                  />
+                  <View style={styles.modalBtn}>
+                    <TouchableOpacity onPress={() => {
+                      setColorModalVisible(false)
+                      setColorInputVal()
+                      setColorSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      setColorModalVisible(false)
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+
+          <View style={{ width: '48%' }}>
+            <Text style={styles.text}></Text>
+            <TextInput placeholder={language.values.settingsScreen.colorAlt} style={styles.inputArea1} onFocus={() => { setAltColorModalVisible(true) }} value={altColorInputVal} />
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={altColorModalVisible}
+              onRequestClose={() => {
+                setAltColorModalVisible(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={{ paddingBottom: 10 }}>{language.values.settingsScreen.modalHead}</Text>
+                  <FlatList
+                    data={altColorList}
+                    horizontal={false}
+                    renderItem={renderAltColorItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    extraData={altColorSelectedItem}
+                    showsVerticalScrollIndicator={false}
+                  />
+                  <View style={styles.modalBtn}>
+                    <TouchableOpacity onPress={() => {
+                      setAltColorModalVisible(false)
+                      setAltColorInputVal()
+                      setAltColorSelectedItem()
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.cancel}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      setAltColorModalVisible(false)
+                    }}>
+                      <Text style={styles.modalBtnText}>{language.values.settingsScreen.ok}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -309,7 +550,7 @@ export default function SettingsScreen({ navigation, route }) {
           }}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
-            <Text style={{ fontSize: 26 }}>Идет поиск ...</Text>
+            <Text style={{ fontSize: 26 }}>{language.values.settingsScreen.loading}</Text>
             <ActivityIndicator
               visible={loading}
               size='large'
@@ -328,7 +569,7 @@ export default function SettingsScreen({ navigation, route }) {
           }}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
-            <Text style={{ fontSize: 26, textAlign: 'center', marginBottom: 20 }}>Ничего не найдено, измените параметры поиска</Text>
+            <Text style={{ fontSize: 26, textAlign: 'center', marginBottom: 20 }}>{language.values.settingsScreen.searchErr}</Text>
             <View>
               <Ionicons name="md-arrow-back-circle-sharp" size={50} color="#168dd0" onPress={() => navigation.navigate('Home')} />
             </View>
@@ -341,84 +582,118 @@ export default function SettingsScreen({ navigation, route }) {
             <TouchableOpacity style={styles.btnArea} onPress={() => {
               setFollowModal(true)
               setLoading(true)
-              let carsAuc = []
-              let carsRate = []
-              let carsStatus = []
+
+              let carEngine = ''
+              let carsRate = ''
+              let carInspect = ''
+              let rangeStart = ''
+              let rangeEnd = ''
+              let color = ''
+              let altColor = ''
 
               aucList.forEach((it) => {
-                for (let i = 0; i <= selectedItem.length; i += 1) {
-                  if (it.id === selectedItem[i]) {
-                    carsAuc.push(it.title)
-                  }
+                if (it.id === selectedItem) {
+                  carEngine = it.value
                 }
               })
-
               rateList.forEach((it) => {
-                for (let i = 0; i <= rateSelectedItem.length; i += 1) {
-                  if (it.id === rateSelectedItem[i]) {
-                    carsRate.push(it.title)
-                  }
+                if (it.id === rateSelectedItem) {
+                  carsRate = it.value
+                }
+              })
+              inspectList.forEach((it) => {
+                if (it.id === inspectSelectedItem) {
+                  carInspect = it.value
+                }
+              })
+              range_start.forEach((it) => {
+                if (it.id === rangeStartSelectedItem) {
+                  rangeStart = it.value
+                }
+              })
+              range_end.forEach((it) => {
+                if (it.id === rangeEndSelectedItem) {
+                  rangeEnd = it.value
+                }
+              })
+              colorList.forEach((it) => {
+                if (it.id === colorSelectedItem) {
+                  color = it.value
+                }
+              })
+              altColorList.forEach((it) => {
+                if (it.id === altColorSelectedItem) {
+                  altColor = it.value
                 }
               })
 
-              statusList.forEach((it) => {
-                for (let i = 0; i <= statusSelectedItem.length; i += 1) {
-                  if (it.id === statusSelectedItem[i]) {
-                    carsStatus.push(it.title)
-                  }
-                }
-              })
-
-              followFunc(carsBarnd, carsMod, carsAuc, carsRate, carsStatus, year_start, year_end, range_start, range_end, login, pass)
+              followFunc(carsBarnd, carsMod, carEngine, carsRate, carInspect, year_start, year_end, rangeStart, rangeEnd, color, altColor)
             }}>
-              <Text style={{ color: '#fff', fontSize: 16 }}>Начать отслеживание</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>{language.values.settingsScreen.newSearch}</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.btnArea} onPress={() => {
 
-              let carsAuc = []
-              let carsRate = []
-              let carsStatus = []
+              let carEngine = ''
+              let carsRate = ''
+              let carInspect = ''
+              let rangeStart = ''
+              let rangeEnd = ''
+              let color = ''
+              let altColor = ''
 
               aucList.forEach((it) => {
-                for (let i = 0; i <= selectedItem.length; i += 1) {
-                  if (it.id === selectedItem[i]) {
-                    carsAuc.push(it.title)
-                  }
+                if (it.id === selectedItem) {
+                  carEngine = it.value
                 }
               })
-
               rateList.forEach((it) => {
-                for (let i = 0; i <= rateSelectedItem.length; i += 1) {
-                  if (it.id === rateSelectedItem[i]) {
-                    carsRate.push(it.title)
-                  }
+                if (it.id === rateSelectedItem) {
+                  carsRate = it.value
                 }
               })
-
-              statusList.forEach((it) => {
-                for (let i = 0; i <= statusSelectedItem.length; i += 1) {
-                  if (it.id === statusSelectedItem[i]) {
-                    carsStatus.push(it.title)
-                  }
+              inspectList.forEach((it) => {
+                if (it.id === inspectSelectedItem) {
+                  carInspect = it.value
+                }
+              })
+              range_start.forEach((it) => {
+                if (it.id === rangeStartSelectedItem) {
+                  rangeStart = it.value
+                }
+              })
+              range_end.forEach((it) => {
+                if (it.id === rangeEndSelectedItem) {
+                  rangeEnd = it.value
+                }
+              })
+              colorList.forEach((it) => {
+                if (it.id === colorSelectedItem) {
+                  color = it.value
+                }
+              })
+              altColorList.forEach((it) => {
+                if (it.id === altColorSelectedItem) {
+                  altColor = it.value
                 }
               })
 
               navigation.navigate('carsResultsScreen', {
                 carsBarnd: carsBarnd,
                 carsMod: carsMod,
-                carsAuc: carsAuc,
+                color: color,
+                altColor: altColor,
                 carsRate: carsRate,
-                carsStatus: carsStatus,
+                carInspect: carInspect,
                 year_start: year_start,
                 year_end: year_end,
-                range_start: range_start,
-                range_end: range_end,
-                login: login,
-                pass: pass
+                range_start: rangeStart,
+                range_end: rangeEnd,
+                engine: carEngine,
+                language: language
               })
             }}>
-              <Text style={{ color: '#fff', fontSize: 16 }}>Начать поиск</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>{language.values.settingsScreen.newSearch}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -454,8 +729,7 @@ const styles = StyleSheet.create({
 
   },
   aucView: {
-    alignItems: 'center'
-
+    alignItems: 'center',
   },
   inputView: {
     flexDirection: 'row',
@@ -511,7 +785,7 @@ const styles = StyleSheet.create({
 
   },
   modalBtn: {
-    marginTop: 15,
+    paddingTop: 15,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'flex-end',
@@ -523,10 +797,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    width: '100%',
+    width: 1000,
     marginTop: 20,
 
+  },
+  modalBtnText: {
+    fontSize: 16
   }
-
 })
 

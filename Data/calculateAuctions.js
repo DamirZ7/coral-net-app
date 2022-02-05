@@ -2,7 +2,7 @@ const calculateAuctions = [
     {
         id: 1,
         value: 0,
-        title: 'По умолчанию (¥22 000)'
+        title: '¥22 000'
     },
     {
         id: 2,

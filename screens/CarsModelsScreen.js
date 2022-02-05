@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, FlatList, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import carModel from '../Data/carModel';
@@ -6,19 +6,25 @@ import carModel from '../Data/carModel';
 
 export default function CarsModelsScreen({ navigation, route }) {
 
-    const { carsId, login, pass, follow } = route.params
+    const { carsId, follow, language } = route.params
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: language.values.modelScreen.selectModel,
+        })
+    }, [language])
 
     const carsModelData = carModel.filter((it) => {
         if (it.value === carsId) {
             return it
         }
     })
-const filterModel = carsModelData.map((it) => it.title).flat()
+    const filterModel = carsModelData.map((it) => it.title).flat()
     const [listOfModels, setListOfModels] = useState(carsModelData)
     const [searchModel, setSearchModel] = useState('')
     const [filteredDataModel, setFilteredDataModel] = useState(filterModel)
 
-    
+
 
 
     const searchFilteredModelFunction = (text) => {
@@ -40,24 +46,23 @@ const filterModel = carsModelData.map((it) => it.title).flat()
     }
 
     const modelsListView = ({ item }) => {
-            
-                return (
-                    <TouchableOpacity style={styles.carList} onPress={() => {
-                        const carsModel = item
-                        
-                        navigation.navigate('SettingsScreen', {
-                            carsMod: carsModel,
-                            carsBarnd: carsId,
-                            login: login,
-                            pass: pass,
-                            follow: follow
-                        })
-                    }} >
-                        <Text style={styles.text} >{item}</Text>
-                    </TouchableOpacity>
-                )
-            
-        
+
+        return (
+            <TouchableOpacity style={styles.carList} onPress={() => {
+                const carsModel = item
+
+                navigation.navigate('SettingsScreen', {
+                    carsMod: carsModel,
+                    carsBarnd: carsId,
+                    follow: follow,
+                    language: language
+                })
+            }} >
+                <Text style={styles.text} >{item}</Text>
+            </TouchableOpacity>
+        )
+
+
     }
 
     return (
@@ -70,7 +75,7 @@ const filterModel = carsModelData.map((it) => it.title).flat()
                     color="#168dd0" />
                 <TextInput
                     style={styles.search}
-                    placeholder='Поиск'
+                    placeholder={language.values.modelScreen.search}
                     onChangeText={(text) => searchFilteredModelFunction(text)}
                     value={searchModel} />
             </View>
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
         shadowColor: '#168dd0',
         shadowOpacity: 0.3,
         shadowRadius: 5,
-        shadowOffset: {width: 0, height: 2}
+        shadowOffset: { width: 0, height: 2 }
 
     },
     list: {

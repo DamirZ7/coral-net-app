@@ -2,404 +2,572 @@ const carBrand = [
     {
         id: 1,
         title: 'TOYOTA',
-        value: 'aj1_1',
+        value: '010',
         img: require('./images/Toyota_1.jpg')
     },
     {
         id: 2,
         title: 'NISSAN',
-        value: 'aj1_2',
+        value: '011',
         img: require('./images/Nissan_1.jpg')
     },
     {
         id: 3,
-        title: 'MAZDA',
-        value: 'aj1_3',
-        img: require('./images/Mazda_1.jpg')
-    },
-    {
-        id: 4,
         title: 'MITSUBISHI',
-        value: 'aj1_4',
+        value: '012',
         img: require('./images/MMC_logo41.png')
     },
     {
+        id: 4,
+        title: 'MAZDA',
+        value: '013',
+        img: require('./images/Mazda_1.jpg')
+    },
+    {
         id: 5,
-        title: 'HONDA',
-        value: 'aj1_5',
-        img: require('./images/Honda_1.jpg')
-    },
-    {
-        id: 6,
-        title: 'SUZUKI',
-        value: 'aj1_6',
-        img: require('./images/Suzuki_1.jpg')
-    },
-    {
-        id: 7,
-        title: 'SUBARU',
-        value: 'aj1_7',
-        img: require('./images/V_C_300dpi.png')
-    },
-    {
-        id: 8,
         title: 'ISUZU',
-        value: 'aj1_8',
+        value: '014',
         img: require('./images/Isuzu_1.jpg')
     },
     {
-        id: 9,
+        id: 6,
+        title: 'HONDA',
+        value: '015',
+        img: require('./images/Honda_1.jpg')
+    },
+    {
+        id: 7,
         title: 'DAIHATSU',
-        value: 'aj1_9',
+        value: '016',
         img: require('./images/Daihatsu_1.jpg')
+    },
+    {
+        id: 8,
+        title: 'SUBARU',
+        value: '017',
+        img: require('./images/V_C_300dpi.png')
+    },
+    {
+        id: 9,
+        title: 'SUZUKI',
+        value: '018',
+        img: require('./images/Suzuki_1.jpg')
     },
     {
         id: 10,
         title: 'MITSUOKA',
-        value: 'aj1_10',
+        value: '019',
         img: require('./images/mitsuoka.png')
     },
     {
         id: 11,
         title: 'LEXUS',
-        value: 'aj1_23',
+        value: '020',
         img: require('./images/Lexus_1.jpg')
     },
     {
         id: 12,
-        title: 'ALFAROMEO',
-        value: 'aj1_12',
-        img: require('./images/Alfa_Romeo_1.jpg')
+        title: 'HINO',
+        value: '021',
+        img: require('./images/Hino_1.jpg')
     },
     {
         id: 13,
-        title: 'ASTON MARTIN',
-        value: 'aj1_112',
-        img: require('./images/Aston_Martin1.jpg')
+        title: 'NISSAN DIESEL',
+        value: '022',
+        img: require('./images/Nissan_1.jpg')
     },
     {
         id: 14,
-        title: 'AUDI',
-        value: 'aj1_13',
-        img: require('./images/Audi_1.jpg')
+        title: 'MITSUBISHI FUSO',
+        value: '023',
+        img: require('./images/MMC_logo41.png')
     },
     {
         id: 15,
-        title: 'BENTLEY',
-        value: 'aj1_115',
-        img: require('./images/Bentley_1.jpg')
+        title: 'AMG',
+        value: '051',
+        img: require('./images/amg1.jpg')
     },
     {
         id: 16,
         title: 'BMW',
-        value: 'aj1_14',
+        value: '052',
         img: require('./images/BMW_1.jpg')
     },
     {
         id: 17,
         title: 'BMW ALPINA',
-        value: 'aj1_117',
+        value: '053',
         img: require('./images/Alpina_1.jpg')
     },
     {
         id: 18,
-        title: 'CADILLAC',
-        value: 'aj1_119',
-        img: require('./images/Cadillac_log.jpg')
+        title: 'AUDI',
+        value: '054',
+        img: require('./images/Audi_1.jpg')
     },
     {
         id: 19,
-        title: 'CHEVROLET',
-        value: 'aj1_121',
-        img: require('./images/Chevrolet_1.jpg')
+        title: 'YES!',
+        value: '055',
+        img: require('./images/Yes-Logo.jpeg')
     },
     {
         id: 20,
-        title: 'CHRYSLER',
-        value: 'aj1_15',
-        img: require('./images/Chrysler_11.jpg')
-    },
-    {
-        id: 21,
-        title: 'CITROEN',
-        value: 'aj1_16',
-        img: require('./images/Citroen_logo.jpg')
-    },
-    {
-        id: 22,
-        title: 'DODGE',
-        value: 'aj1_124',
-        img: require('./images/Dodge_1.jpg')
-    },
-    {
-        id: 23,
-        title: 'FERRARI',
-        value: 'aj1_126',
-        img: require('./images/Ferrari_1.jpg')
-    },
-    {
-        id: 24,
-        title: 'FIAT',
-        value: 'aj1_18',
-        img: require('./images/Fiat_11.jpg')
-    },
-    {
-        id: 25,
-        title: 'FORD',
-        value: 'aj1_19',
-        img: require('./images/Ford_1.jpg')
-    },
-    {
-        id: 26,
-        title: 'GM',
-        value: 'aj1_20',
-        img: require('./images/Gm_logo21.png')
-    },
-    {
-        id: 27,
-        title: 'GMC',
-        value: 'aj1_128',
-        img: require('./images/GMC_1.jpg')
-    },
-    {
-        id: 28,
-        title: 'HANIX',
-        value: 'aj1_339',
-        img: require('./images/Hanix1.png')
-    },
-    {
-        id: 29,
-        title: 'HINO',
-        value: 'aj1_21',
-        img: require('./images/Hino_1.jpg')
-    },
-    {
-        id: 30,
-        title: 'HITACHI',
-        value: 'aj1_340',
-        img: require('./images/Hitachi1.png')
-    },
-    {
-        id: 31,
-        title: 'HUMMER',
-        value: 'aj1_129',
-        img: require('./images/Hummer_1.jpg')
-    },
-    {
-        id: 32,
-        title: 'ISEKI',
-        value: 'aj1_341',
-        img: require('./images/5134-iseki_logo.jpg')
-    },
-    {
-        id: 33,
-        title: 'JAGUAR',
-        value: 'aj1_132',
-        img: require('./images/Jaguar_1.jpg')
-    },
-    {
-        id: 34,
-        title: 'JEEP',
-        value: 'aj1_234',
-        img: require('./images/Jeep_1.jpg')
-    },
-    {
-        id: 35,
-        title: 'KAWASAKI',
-        value: 'aj1_236',
-        img: require('./images/Kawasaki.png')
-    },
-    {
-        id: 36,
-        title: 'KOBELCO',
-        value: 'aj1_342',
-        img: require('./images/Kobelco.png')
-    },
-    {
-        id: 37,
-        title: 'KOMATSU',
-        value: 'aj1_343',
-        img: require('./images/Komatsu.png')
-    },
-    {
-        id: 38,
-        title: 'KUBOTA',
-        value: 'aj1_344',
-        img: require('./images/Kubota1.png')
-    },
-    {
-        id: 39,
-        title: 'LANCIA',
-        value: 'aj1_135',
-        img: require('./images/Lancia_1.jpg')
-    },
-    {
-        id: 40,
-        title: 'LAND ROVER',
-        value: 'aj1_34',
-        img: require('./images/Land_Rover_1.jpg')
-    },
-    {
-        id: 41,
-        title: 'MASERATI',
-        value: 'aj1_137',
-        img: require('./images/Maserati_1.jpg')
-    },
-    {
-        id: 42,
-        title: 'MAYBACH',
-        value: 'aj1_255',
-        img: require('./images/Maybach_1.jpg')
-    },
-    {
-        id: 43,
-        title: 'MERCEDES BENZ',
-        value: 'aj1_24',
-        img: require('./images/Mercedes_1.jpg')
-    },
-    {
-        id: 44,
-        title: 'MINI',
-        value: 'aj1_139',
-        img: require('./images/Mini_1.jpg')
-    },
-    {
-        id: 45,
         title: 'OPEL',
-        value: 'aj1_25',
+        value: '056',
         img: require('./images/Opel_1.jpg')
     },
     {
-        id: 46,
-        title: 'PEUGEOT',
-        value: 'aj1_26',
-        img: require('./images/Peugeot_1.jpg')
-    },
-    {
-        id: 47,
-        title: 'PORSCHE',
-        value: 'aj1_148',
-        img: require('./images/Porsche_1.jpg')
-    },
-    {
-        id: 48,
-        title: 'RENAULT',
-        value: 'aj1_27',
-        img: require('./images/Renault_1.jpg')
-    },
-    {
-        id: 49,
-        title: 'ROLLS ROYCE',
-        value: 'aj1_149',
-        img: require('./images/RolsRoyce_1.jpg')
-    },
-    {
-        id: 50,
-        title: 'ROVER',
-        value: 'aj1_28',
-        img: require('./images/Rover1.png')
-    },
-    {
-        id: 51,
-        title: 'SAAB',
-        value: 'aj1_150',
-        img: require('./images/Saab_1.jpg')
-    },
-    {
-        id: 52,
+        id: 21,
         title: 'SMART',
-        value: 'aj1_291',
+        value: '057',
         img: require('./images/Smart_1.jpg')
     },
     {
-        id: 53,
-        title: 'SUMITOMO',
-        value: 'aj1_345',
-        img: require('./images/Sumitomo.png')
-    },
-    {
-        id: 54,
-        title: 'TADANO',
-        value: 'aj1_346',
-        img: require('./images/Tadano.png')
-    },
-    {
-        id: 55,
-        title: 'TCM',
-        value: 'aj1_30',
-        img: require('./images/TCM1.png')
-    },
-    {
-        id: 56,
+        id: 22,
         title: 'VOLKSWAGEN',
-        value: 'aj1_31',
+        value: '058',
         img: require('./images/Volkswagen_1.jpg')
     },
     {
-        id: 57,
+        id: 23,
+        title: 'BRABUS',
+        value: '059',
+        img: require('./images/Brabus.jpeg')
+    },
+    {
+        id: 24,
+        title: 'MERCEDES BENZ',
+        value: '060',
+        img: require('./images/Mercedes_1.jpg')
+    },
+    {
+        id: 25,
+        title: 'PORSHE',
+        value: '061',
+        img: require('./images/Porsche_1.jpg')
+    },
+    {
+        id: 26,
+        title: 'MAYBACH',
+        value: '062',
+        img: require('./images/Maybach_1.jpg')
+    },
+    {
+        id: 27,
+        title: 'RUF',
+        value: '063',
+        img: require('./images/ruf.jpg')
+    },
+    {
+        id: 28,
+        title: 'MINI',
+        value: '064',
+        img: require('./images/Mini_1.jpg')
+    },
+    {
+        id: 29,
+        title: 'SAAB',
+        value: '071',
+        img: require('./images/Saab_1.jpg')
+    },
+    {
+        id: 30,
         title: 'VOLVO',
-        value: 'aj1_32',
+        value: '072',
         img: require('./images/Volvo_Logos_.jpg')
     },
     {
-        id: 58,
-        title: 'YAMAHA',
-        value: 'aj1_326',
-        img: require('./images/Yamaha_1.jpg')
+        id: 31,
+        title: 'CITROEN',
+        value: '081',
+        img: require('./images/Citroen_logo.jpg')
     },
     {
-        id: 59,
-        title: 'YANMAR',
-        value: 'aj1_347',
-        img: require('./images/Yanmar.png')
+        id: 32,
+        title: 'PEUGEOT',
+        value: '82',
+        img: require('./images/Peugeot_1.jpg')
     },
     {
-        id: 60,
-        title: 'OTHERS',
-        value: 'aj1_98',
-        img: require('./images/Lucra_1.jpg')
+        id: 33,
+        title: 'RENAULT',
+        value: '083',
+        img: require('./images/Renault_1.jpg')
     },
     {
-        id: 61,
-        title: 'ACURA',
-        value: 'aj1_11',
-        img: require('./images/Acura_1.jpg')
+        id: 34,
+        title: 'AMC',
+        value: '091',
+        img: require('./images/amc.jpg')
     },
     {
-        id: 62,
-        title: 'DAIMLER',
-        value: 'aj1_17',
-        img: require('./images/Daimler.png')
+        id: 35,
+        title: 'GMC',
+        value: '092',
+        img: require('./images/GMC_1.jpg')
     },
     {
-        id: 63,
-        title: 'HYUNDAI',
-        value: 'aj1_130',
-        img: require('./images/Hyunday_1.jpg')
+        id: 36,
+        title: 'WINNEBAGO',
+        value: '093',
+        img: require('./images/winnebago-1-logo.png')
     },
     {
-        id: 64,
-        title: 'INFINITI',
-        value: 'aj1_229',
-        img: require('./images/Infiniti_1.jpg')
+        id: 37,
+        title: 'OLDSMOBILE',
+        value: '094',
+        img: require('./images/Oldsmobile_logo.jpg')
     },
     {
-        id: 65,
-        title: 'LAMBORGHINI',
-        value: 'aj1_134',
-        img: require('./images/Lamborghini_.jpg')
+        id: 38,
+        title: 'CADILLAC',
+        value: '095',
+        img: require('./images/Cadillac_log.jpg')
     },
     {
-        id: 66,
+        id: 39,
+        title: 'CHRYSLER',
+        value: '096',
+        img: require('./images/Chrysler_11.jpg')
+    },
+    {
+        id: 40,
+        title: 'SATURN',
+        value: '097',
+        img: require('./images/saturn.jpg')
+    },
+    {
+        id: 41,
+        title: 'SALEEN',
+        value: '098',
+        img: require('./images/saleen-logo.png')
+    },
+    {
+        id: 42,
+        title: 'CHEVROLET',
+        value: '099',
+        img: require('./images/Chevrolet_1.jpg')
+    },
+    {
+        id: 43,
+        title: 'DODGE',
+        value: '100',
+        img: require('./images/Dodge_1.jpg')
+    },
+    {
+        id: 44,
+        title: 'HUMMER',
+        value: '101',
+        img: require('./images/Hummer_1.jpg')
+    },
+    {
+        id: 45,
+        title: 'BUICK',
+        value: '102',
+        img: require('./images/buick-logo.png')
+    },
+    {
+        id: 46,
+        title: 'FORD',
+        value: '103',
+        img: require('./images/Ford_1.jpg')
+    },
+    {
+        id: 47,
+        title: 'PLYMOUTH',
+        value: '104',
+        img: require('./images/plymouth-logo.png')
+    },
+    {
+        id: 48,
+        title: 'PONTIAC',
+        value: '105',
+        img: require('./images/Pontiac-Logo.png')
+    },
+    {
+        id: 49,
+        title: 'MERCURY',
+        value: '106',
+        img: require('./images/mercury.jpg')
+    },
+    {
+        id: 50,
         title: 'LINCOLN',
-        value: 'aj1_35',
+        value: '107',
         img: require('./images/Linkoln_1.jpg')
     },
     {
+        id: 51,
+        title: 'JEEP',
+        value: '108',
+        img: require('./images/Jeep_1.jpg')
+    },
+    {
+        id: 52,
+        title: 'BL',
+        value: '111',
+        img: require('./images/bl.png')
+    },
+    {
+        id: 53,
+        title: 'MG',
+        value: '112',
+        img: require('./images/mg.png')
+    },
+    {
+        id: 54,
+        title: 'TVR',
+        value: '113',
+        img: require('./images/tvr.png')
+    },
+    {
+        id: 55,
+        title: 'ASTONMARTIN',
+        value: '114',
+        img: require('./images/Aston_Martin1.jpg')
+    },
+    {
+        id: 56,
+        title: 'WOLSELEY',
+        value: '115',
+        img: require('./images/wolseley.png')
+    },
+    {
+        id: 57,
+        title: 'WESTFIELD',
+        value: '116',
+        img: require('./images/westfield.jpg')
+    },
+    {
+        id: 58,
+        title: 'AUSTIN',
+        value: '117',
+        img: require('./images/austin.png')
+    },
+    {
+        id: 59,
+        title: 'CATERHAM',
+        value: '118',
+        img: require('./images/caterham.png')
+    },
+    {
+        id: 60,
+        title: 'JAGUAR',
+        value: '119',
+        img: require('./images/Jaguar_1.jpg')
+    },
+    {
+        id: 61,
+        title: 'DAIMLER',
+        value: '120',
+        img: require('./images/Daimler.png')
+    },
+    {
+        id: 62,
+        title: 'TRIUMPH',
+        value: '121',
+        img: require('./images/triumph.png')
+    },
+    {
+        id: 63,
+        title: 'VANDEN PLAS',
+        value: '122',
+        img: require('./images/vp.png')
+    },
+    {
+        id: 64,
+        title: 'PANTHER',
+        value: '123',
+        img: require('./images/panter.png')
+    },
+    {
+        id: 65,
+        title: 'HEALEY',
+        value: '124',
+        img: require('./images/Austin_Healey_Logo.jpg')
+    },
+    {
+        id: 66,
+        title: 'BENTLEY',
+        value: '125',
+        img: require('./images/Bentley_1.jpg')
+    },
+    {
         id: 67,
+        title: 'MARCOS',
+        value: '126',
+        img: require('./images/marcos.jpeg')
+    },
+    {
+        id: 68,
+        title: 'MORGAN',
+        value: '127',
+        img: require('./images/morgan.jpg')
+    },
+    {
+        id: 69,
+        title: 'MORRIS',
+        value: '128',
+        img: require('./images/morris.png')
+    },
+    {
+        id: 70,
+        title: 'RILEY',
+        value: '129',
+        img: require('./images/riley.png')
+    },
+    {
+        id: 71,
+        title: 'LAND ROVER',
+        value: '130',
+        img: require('./images/Land_Rover_1.jpg')
+    },
+    {
+        id: 72,
         title: 'LOTUS',
-        value: 'aj1_136',
+        value: '131',
         img: require('./images/Lotus_1.jpg')
+    },
+    {
+        id: 73,
+        title: 'ROVER',
+        value: '132',
+        img: require('./images/Rover1.png')
+    },
+    {
+        id: 74,
+        title: 'ROLLS ROYCE',
+        value: '133',
+        img: require('./images/RolsRoyce_1.jpg')
+    },
+    {
+        id: 75,
+        title: 'BIRKIN',
+        value: '141',
+        img: require('./images/birkin.jpeg')
+    },
+    {
+        id: 76,
+        title: 'AUTOBIANCHI',
+        value: '151',
+        img: require('./images/autobianchi.jpg')
+    },
+    {
+        id: 77,
+        title: 'ALFA ROMEO',
+        value: '152',
+        img: require('./images/Alfa_Romeo_1.jpg')
+    },
+    {
+        id: 78,
+        title: 'INNOCENTI',
+        value: '153',
+        img: require('./images/innocenti.png')
+    },
+    {
+        id: 79,
+        title: 'DETOMASO',
+        value: '154',
+        img: require('./images/detomasso.jpg')
+    },
+    {
+        id: 80,
+        title: 'FIAT',
+        value: '155',
+        img: require('./images/Fiat_11.jpg')
+    },
+    {
+        id: 81,
+        title: 'FERRARI',
+        value: '156',
+        img: require('./images/Ferrari_1.jpg')
+    },
+    {
+        id: 82,
+        title: 'BUGATTI',
+        value: '157',
+        img: require('./images/bugatti.png')
+    },
+    {
+        id: 83,
+        title: 'MASERATI',
+        value: '158',
+        img: require('./images/Maserati_1.jpg')
+    },
+    {
+        id: 84,
+        title: 'LANCIA',
+        value: '159',
+        img: require('./images/Lancia_1.jpg')
+    },
+    {
+        id: 85,
+        title: 'LAMBORGHINI',
+        value: '160',
+        img: require('./images/Lamborghini_.jpg')
+    },
+    {
+        id: 86,
+        title: 'DONKERVOORT',
+        value: '171',
+        img: require('./images/donkervoort.png')
+    },
+    {
+        id: 87,
+        title: 'GM DEW',
+        value: '181',
+        img: require('./images/Gm_logo21.png')
+    },
+    {
+        id: 88,
+        title: 'GM MATIZ',
+        value: '182',
+        img: require('./images/Gm_logo21.png')
+    },
+    {
+        id: 89,
+        title: 'KIA',
+        value: '183',
+        img: require('./images/kia.jpg')
+    },
+    {
+        id: 90,
+        title: 'SSANG YONG',
+        value: '184',
+        img: require('./images/ssangyong-logo.png')
+    },
+    {
+        id: 91,
+        title: 'HYUNDAI',
+        value: '185',
+        img: require('./images/hyundai.jpg')
+    },
+    {
+        id: 92,
+        title: 'LADA',
+        value: '191',
+        img: require('./images/lada-logo.png')
+    },
+    {
+        id: 93,
+        title: 'TD',
+        value: '201',
+        img: require('./images/td.jpeg')
+    },
+    {
+        id: 94,
+        title: 'REVERSE IMPORT',
+        value: '901',
+        img: require('./images/Lucra_1.jpg')
+    },
+    {
+        id: 95,
+        title: 'OTHERS',
+        value: '999',
+        img: require('./images/Lucra_1.jpg')
     },
 ]
 
