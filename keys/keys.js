@@ -1,3 +1,3 @@
-const URL = 'http://192.168.100.247:8000'
+const URL = 'http://coralserver.ddns.net:9000'
 
 export default URL
